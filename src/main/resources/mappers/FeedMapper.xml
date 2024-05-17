@@ -20,23 +20,23 @@
 
     <select id="getFeed">
         SELECT A.feed_id AS feedId, A.writer_id AS writerId, A.created_at AS createdAt,
-                A.contents, A.location, B.nm AS writerNm, B.pic AS writerPic
+                A.contents, A.location, B.nm AS writerNm, B.pic AS writerPic, IF(C.feed_id IS NULL, 0, 1) AS isFav
         FROM feed A
         INNER JOIN user B
         ON A.writer_id=B.user_id
         LEFT JOIN feed_favorite C
-        ON B.user_id=C.user_id AND A.feed_id=C.feed_id
+        ON #{signedUserId}=C.user_id AND A.feed_id=C.feed_id
         ORDER BY A.created_at DESC
         LIMIT #{startNum}, #{size}
     </select>
 
-    <select id="getFeedPics">
+    <select id="getFeedPicsByFeedId">
         SELECT pic
         FROM feed_pics
         WHERE feed_id=#{feed_id}
     </select>
 
-    <select id="getFeedComments">
+    <select id="getFeedCommentTopBy4ByFeedId">
         SELECT A.feed_comment_id AS feedCommentId, A.comment, A.user_id AS writerId,
             B.pic AS writerPic, B.nm AS writerNm, A.created_at AS createdAt
         FROM feed_comment A

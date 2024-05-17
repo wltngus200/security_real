@@ -14,8 +14,9 @@ public interface FeedMapper {
 
     List<FeedGetRes> getFeed(FeedGetReq p);
 
-    List<String> getFeedPics(long feed_id);
+    List<String> getFeedPicsByFeedId(long feedId);
 
-    List<FeedCommentGetRes> getFeedComments(long feed_id);
+    //아직 안 함
+    List<FeedCommentGetRes> getFeedCommentTopBy4ByFeedId(long feedId);
 
 }

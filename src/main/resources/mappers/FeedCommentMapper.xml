@@ -2,17 +2,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.green.greengram.feedcomment.FeedCommentMapper">
-    <insert id="postComment" keyProperty="feedCommentId" useGeneratedKeys="true">
+    <insert id="insFeedComment" keyProperty="feedCommentId" useGeneratedKeys="true">
         INSERT INTO feed_comment
         (comment, feed_id, user_id)
         VALUES
         (#{comment}, #{feedId}, #{userId})
     </insert>
 
-    <delete id="deleteComment">
+    <delete id="deleteFeedComment">
         DELETE
         FROM feed_comment
-        WHERE feed_comment_id=#{feedCommentId}
+        WHERE feed_comment_id=#{feedCommentId} AND user_id=#{signedUserId}
     </delete>
 
 

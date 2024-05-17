@@ -38,27 +38,23 @@ public class FeedService {
                 e.printStackTrace();
                 throw new RuntimeException(".·´¯`(>▂<)´¯`·. 업로드에 실패해쪙");
             }
-        }mapper.postFeedPics(req);
+        }int upPics=mapper.postFeedPics(req);
         return FeedPostRes.builder().feedId(req.getFeedId()).pics(req.getFileNames()).build();
-    }FeedPostRes res= FeedPostRes.builder().build();
+    }
     //for와 try의 위치가 다르지만 정상작동
 
     List<FeedGetRes> getFeed(FeedGetReq p){
-        log.info("{}",p);
         List<FeedGetRes> list=mapper.getFeed(p);
-        log.info("{}",p);
         for(FeedGetRes res:list){
             //사진
-            List<String> pics=mapper.getFeedPics(res.getFeedId());
+            List<String> pics=mapper.getFeedPicsByFeedId(res.getFeedId());
             res.setPics(pics);
 
             //코멘트
-            List<FeedCommentGetRes> comments=mapper.getFeedComments(res.getFeedId());
+            List<FeedCommentGetRes> comments=mapper.getFeedCommentTopBy4ByFeedId(res.getFeedId());
             res.setComments(comments);
 
-            //좋아요
 
-            //리스트를 받아와야 for문이 가능한데, 그럼 pic이랑 comment를 못 받아와
         }
 
         return list;

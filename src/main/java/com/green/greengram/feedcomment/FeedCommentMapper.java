@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface FeedCommentMapper {
-    int postComment(FeedCommentPostReq p);
-    int deleteComment(FeedCommentDeleteReq p);
+    int insFeedComment(FeedCommentPostReq p);
+    int deleteFeedComment(FeedCommentDeleteReq p);
 }

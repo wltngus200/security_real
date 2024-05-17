@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 public class FeedCommentService {
     private final FeedCommentMapper mapper;
 
-    int postComment(FeedCommentPostReq p){
-        return mapper.postComment(p);
+    long insFeedComment(FeedCommentPostReq p){
+        int affectedRows= mapper.insFeedComment(p);
+        return p.getFeedCommentId();
     }
 
-    int deleteComment(FeedCommentDeleteReq p){
-        return mapper.deleteComment(p);
+    int deleteFeedComment(FeedCommentDeleteReq p){
+        return mapper.deleteFeedComment(p);
     }
 }
