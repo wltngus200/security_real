@@ -1,10 +1,7 @@
 package com.green.greengram.user;
 
 import com.green.greengram.common.CustomFileUtils;
-import com.green.greengram.user.model.SignInPostReq;
-import com.green.greengram.user.model.SignInRes;
-import com.green.greengram.user.model.SignUpPostReq;
-import com.green.greengram.user.model.User;
+import com.green.greengram.user.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -50,5 +47,8 @@ public class UserService {
                 .pic(user.getPic())
                 .userId(user.getUserId())
                 .build();
+    }
+    public UserInfoGetRes getUserInfo(UserInfoGetReq p){
+        return mapper.selProfileUserInfo(p);
     }
 }
