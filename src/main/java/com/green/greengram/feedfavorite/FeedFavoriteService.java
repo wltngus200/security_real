@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 public class FeedFavoriteService {
     private final FeedFavoriteMapper mapper;
 
-    int postLike(FeedFavoriteToggleReq p){
+    int toggleFavorite(FeedFavoriteToggleReq p){
         int result;
         try{
-            mapper.postLike(p);
+            mapper.insFeedFavorite(p);
             result=1;
         }catch(Exception e){
-            mapper.deleteLike(p);
+            mapper.delFeedFavorite(p);
             result=0;
         }
         return result;

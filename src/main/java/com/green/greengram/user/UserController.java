@@ -41,4 +41,14 @@ public class UserController {
                 .resultData(result)
                 .build();
     }
+
+    @PatchMapping
+    public ResultDto<String> patchProfilePic(@RequestPart UserProfilePatchReq p){
+        String result = service.patchProfilePic(p);//파일 명 리턴
+        return ResultDto.<String>builder()
+                .statusCode(HttpStatus.OK)
+                .resultMsg("(❤´艸｀❤)")
+                .resultData(result)
+                .build();
+    }
 }

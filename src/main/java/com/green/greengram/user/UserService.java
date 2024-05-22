@@ -5,6 +5,7 @@ import com.green.greengram.user.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -50,5 +51,24 @@ public class UserService {
     }
     public UserInfoGetRes getUserInfo(UserInfoGetReq p){
         return mapper.selProfileUserInfo(p);
+    }
+    @Transactional
+    public String patchProfilePic(UserProfilePatchReq p){
+        String fileNm=customFileUtils.makeRandomFileName(p.getPic());
+        p.setPicName(fileNm);
+
+        //기존 폴더 삭제
+        try {
+            String folderPath = String.format("%s/user/%d", customFileUtils.uploadPath, p.getSignedUserId());
+            customFileUtils.deleteFolder((folderPath));
+
+            customFileUtils.makeFolders(folderPath);
+            String filePath = String.format("%s/%s", folderPath, fileNm);
+            customFileUtils.transferTo(p.getPic(), filePath); //메소드 이름 빨간줄=인자를 잘못 적었거나, 예외를 throw를 하고 있는지
+            //try catch를 한 곳에 모아서 처리하는 것이 좋음
+        }catch(Exception e){
+            throw new RuntimeException(e);//원하는 메세지가 있다면 기입
+        }
+        return fileNm;//리턴은 문제가 없었을 때 문제가 없었을 때의 타입
     }
 }
