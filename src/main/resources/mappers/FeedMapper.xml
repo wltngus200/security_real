@@ -40,12 +40,15 @@
         WHERE feed_id=#{feed_id}
     </select>
 
-    <select id="getFeedCommentTopBy4ByFeedId">
+    <select id="getFeedComment">
         SELECT A.feed_comment_id AS feedCommentId, A.comment, A.user_id AS writerId,
             B.pic AS writerPic, B.nm AS writerNm, A.created_at AS createdAt
         FROM feed_comment A
         INNER JOIN user B
         ON A.user_id=B.user_id
+        WHERE A.feed_id=#{feed_id}
+        ORDER BY A.created_at
+        LIMIT 4
     </select>
 
 

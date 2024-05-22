@@ -35,13 +35,11 @@ public class FeedController {
 
     @GetMapping
     public ResultDto<List<FeedGetRes>> getFeed(@ModelAttribute @ParameterObject FeedGetReq p){
-        log.info("con1: {}",p);
-        List<FeedGetRes> feeds=service.getFeed(p);
-        log.info("con2: {}",p);
+        List<FeedGetRes> list=service.getFeed(p);
         return ResultDto.<List<FeedGetRes>>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg("(╬▔皿▔)╯ 아, 왜 안 되는데")
-                .resultData(feeds)
+                .resultData(list)
                 .build();
     }
 
