@@ -42,8 +42,9 @@ public class UserController {
                 .build();
     }
 
-    @PatchMapping
-    public ResultDto<String> patchProfilePic(@RequestPart UserProfilePatchReq p){
+    @PatchMapping(value="pic", consumes="multipart/form-data")//consumes 빼도 가능
+    public ResultDto<String> patchProfilePic(@ModelAttribute UserProfilePatchReq p){//모델 어트리뷰트=폼데이터 형식 JSON안 보냄
+        //순수하게 HTML만으로 데이터를 전송할 수 있는 것이 폼데이터
         String result = service.patchProfilePic(p);//파일 명 리턴
         return ResultDto.<String>builder()
                 .statusCode(HttpStatus.OK)

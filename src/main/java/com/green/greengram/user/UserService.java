@@ -56,14 +56,16 @@ public class UserService {
     public String patchProfilePic(UserProfilePatchReq p){
         String fileNm=customFileUtils.makeRandomFileName(p.getPic());
         p.setPicName(fileNm);
+        mapper.updProfilePic(p);
 
         //기존 폴더 삭제
         try {
-            String folderPath = String.format("%s/user/%d", customFileUtils.uploadPath, p.getSignedUserId());
-            customFileUtils.deleteFolder((folderPath));
+            String midPath=String.format("user/%d", p.getSignedUserId());
+            String delAbsoluteFolderPath = String.format("%s/user/%d", customFileUtils.uploadPath, p.getSignedUserId());
+            customFileUtils.deleteFolder((delAbsoluteFolderPath));
 
-            customFileUtils.makeFolders(folderPath);
-            String filePath = String.format("%s/%s", folderPath, fileNm);
+            customFileUtils.makeFolders(midPath);
+            String filePath = String.format("%s/%s", midPath, fileNm);
             customFileUtils.transferTo(p.getPic(), filePath); //메소드 이름 빨간줄=인자를 잘못 적었거나, 예외를 throw를 하고 있는지
             //try catch를 한 곳에 모아서 처리하는 것이 좋음
         }catch(Exception e){
