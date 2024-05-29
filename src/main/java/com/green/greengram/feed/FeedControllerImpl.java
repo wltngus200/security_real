@@ -14,14 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static java.rmi.server.LogStream.log;
-
 @RequestMapping("api/feed")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class FeedController {
-    private final FeedService service;
+public class FeedControllerImpl {
+    private final FeedServiceImpl service;
 
     @PostMapping
     public ResultDto<FeedPostRes> postFeed(@RequestPart List<MultipartFile> pics, @RequestPart FeedPostReq p){

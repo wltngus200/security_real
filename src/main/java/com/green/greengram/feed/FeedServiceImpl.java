@@ -1,17 +1,14 @@
 package com.green.greengram.feed;
 
 import com.green.greengram.common.CustomFileUtils;
-import com.green.greengram.common.GlobalConst;
 import com.green.greengram.feed.model.*;
 import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.green.greengram.common.GlobalConst.COMMENT_SIZE_PER_FEED;
@@ -19,7 +16,7 @@ import static com.green.greengram.common.GlobalConst.COMMENT_SIZE_PER_FEED;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FeedService {
+public class FeedServiceImpl {
     private final FeedMapper mapper;
     private final CustomFileUtils customFileUtils;
 

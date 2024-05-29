@@ -23,4 +23,22 @@
         FROM user_follow A
         INNER JOIN user B
     </select>
+
+    <select id="selUserFollowListForTest">
+        SELECT from_user_id AS fromUserId, to_user_id AS toUserId, created_at AS createdAt
+        FROM user_follow
+        <where>
+            <if test="fromUserId > 0">
+                from_user_id=#{fromUserId}
+            </if>
+            <if test="toUserId > 0">
+                AND to_user_id=#{toUserId}
+            </if>
+        </where>
+        ORDER BY from_user_id, to_user_id <!--PK가 복합키이기 때문-->
+    </select>
+    <!--다이나믹 SQL문(동적 쿼리) : 상황에 따라 SQL문이 변경이 되었으면 좋겠을 때 사용-->
+    <!--파라미터를 들고 있는 객체를 보내줌 test조건에 해당하지 않으면 빼버림-->
+    <!--뒤쪽에 내용이 있어야지만 WHERE를 넣겠다-->
+    <!--ex. from=0 SELECT * FROM user_follow WHERE to_user_id(AND, OR도 자동으로 빼줌)-->
 </mapper>

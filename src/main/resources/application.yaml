@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/greengram2024_v3
+    url: jdbc:mariadb://localhost:3306/greengram2024_tdd
     username: root
     password: green502
 
@@ -10,7 +10,7 @@ spring:
       max-file-size: 5MB
 
 file:
-  directory: D:\2024_BACK_JI\download\greengram_ver3\
+  directory: D:\2024_BACK_JI\download\greengram_tdd\
 
 mybatis:
   mapper-locations: mappers/**/*.xml
@@ -26,3 +26,18 @@ springdoc:
 
   cache:
     disabled: true
+#위는 프로필 설정 X 이름 X =>디폴트 / 디폴트 쓰면 프로필마다 저 내용 다 쓸 필요 X
+#내가 손으로 테스트 할 때는 SQL이 실행 안 되길 바람>>어떨떄는되고 어떨때는 안 되길 바람
+#위랑 밑은 다른 파일
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: tdd
+  datasource:
+    url: jdbc:mariadb://localhost:3306/greengram2024_tdd_test
+  sql:
+    init:
+      mode: always
