@@ -27,7 +27,7 @@
     <select id="selUserFollowListForTest">
         SELECT from_user_id AS fromUserId, to_user_id AS toUserId, created_at AS createdAt
         FROM user_follow
-        <where>
+        <where><!--SQL WHERE로 쓰면 두 값 모두 0이 넘어갈 때, toUserId가 0일 때 에러-->
             <if test="fromUserId > 0">
                 from_user_id=#{fromUserId}
             </if>

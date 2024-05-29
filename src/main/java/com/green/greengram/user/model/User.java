@@ -1,10 +1,15 @@
 package com.green.greengram.user.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
+import org.apache.commons.lang3.builder.HashCodeExclude;
 
 @Getter
 @AllArgsConstructor//setter를 빼서 VO형식
+@ToString
+@EqualsAndHashCode
 public class User {
     private long userId;
     private String uid;
