@@ -64,6 +64,15 @@ class FeedCommentServiceTest {
     void feedCommentListGet() {
         long feedId1=1;
         long feedId2=2;
+        FeedCommentGetRes res1= new FeedCommentGetRes();
+//        res1.setComment();
+//        res1.setFeedCommentId();
+//        res1.setCreatedAt();
+//        res1.setWriterPic();
+//        res1.setWriterNm();
+//        res1.setWriterId();
+//
+        FeedCommentGetRes res2= new FeedCommentGetRes();
 
         List<FeedCommentGetRes> list1=mapper.feedCommentList(feedId1);
         List<FeedCommentGetRes> list2=mapper.feedCommentList(feedId2);
@@ -76,8 +85,5 @@ class FeedCommentServiceTest {
 
         verify(mapper).feedCommentList(feedId1);
         verify(mapper).feedCommentList(feedId2);
-
-
-
     }
 }

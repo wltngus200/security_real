@@ -10,11 +10,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService{
     private final UserMapper mapper;
     private final CustomFileUtils customFileUtils;
 
-    int postUser(MultipartFile mf, SignUpPostReq p){
+    public int postUser(MultipartFile mf, SignUpPostReq p){
         //암호화
         String hash= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());
         p.setUpw(hash);
@@ -37,7 +37,7 @@ public class UserServiceImpl {
         return result;
     }
 
-    SignInRes postSignIn(SignInPostReq p){
+    public SignInRes postSignIn(SignInPostReq p){
         User user=mapper.getUserId(p.getUid());
         if(user==null){throw new RuntimeException("(′д｀σ)σ 너는 누구야?");
         }else if(!BCrypt.checkpw(p.getUpw(),user.getUpw())){
