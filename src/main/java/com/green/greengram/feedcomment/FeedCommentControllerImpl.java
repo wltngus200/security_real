@@ -2,10 +2,13 @@ package com.green.greengram.feedcomment;
 
 import com.green.greengram.common.model.ResultDto;
 import com.green.greengram.feedcomment.model.FeedCommentDeleteReq;
+import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import com.green.greengram.feedcomment.model.FeedCommentPostReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +37,15 @@ public class FeedCommentControllerImpl implements FeedCommentController {
                 .resultData(result)
                 .build();
     }
+    @GetMapping
+    public ResultDto<List<FeedCommentGetRes>> feedCommentListGet(long feedId){
+        List<FeedCommentGetRes> result=service.feedCommentListGet(feedId);
+        return ResultDto.<List<FeedCommentGetRes>>builder()
+                .statusCode(HttpStatus.OK)
+                .resultData(result)
+                .resultMsg("ヽ(゜▽゜　)－")
+                .build();
 
+    }
 }
 

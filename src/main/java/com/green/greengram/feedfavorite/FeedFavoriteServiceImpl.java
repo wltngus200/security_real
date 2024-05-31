@@ -6,15 +6,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FeedFavoriteServiceImpl {
+public class FeedFavoriteServiceImpl implements FeedFavoriteService {
     private final FeedFavoriteMapper mapper;
 
-    int toggleFavorite(FeedFavoriteToggleReq p){
+    public int toggleFavorite(FeedFavoriteToggleReq p){
         int result = mapper.delFeedFavorite(p);
         if(result == 1) {
             return 0;
         }
         return mapper.insFeedFavorite(p);
-    }//좋아요 처리 & 취소 메세지 띄우기 불가능
+    }
 
 }
