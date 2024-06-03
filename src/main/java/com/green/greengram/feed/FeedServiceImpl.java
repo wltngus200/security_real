@@ -67,10 +67,14 @@ public class FeedServiceImpl {
                 comments.remove(COMMENT_SIZE_PER_FEED-1);
             }
             res.setComments(comments);
-
-
         }
 
         return list;
+    }
+
+    int deleteFeed(long feedId){
+        String.format("");
+        customFileUtils.deleteFolder("");
+        return mapper.deleteFeed(feedId);
     }
 }
