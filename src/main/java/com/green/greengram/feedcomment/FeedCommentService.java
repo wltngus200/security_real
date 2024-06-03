@@ -1,21 +1,14 @@
 package com.green.greengram.feedcomment;
 
 import com.green.greengram.feedcomment.model.FeedCommentDeleteReq;
+import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import com.green.greengram.feedcomment.model.FeedCommentPostReq;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class FeedCommentService {
-    private final FeedCommentMapper mapper;
+import java.util.List;
 
-    long insFeedComment(FeedCommentPostReq p){
-        int affectedRows= mapper.insFeedComment(p);
-        return p.getFeedCommentId();
-    }
+public interface FeedCommentService {
 
-    int deleteFeedComment(FeedCommentDeleteReq p){
-        return mapper.deleteFeedComment(p);
-    }
+    long insFeedComment(FeedCommentPostReq p);
+    int deleteFeedComment(FeedCommentDeleteReq p);
+    List<FeedCommentGetRes> feedCommentListGet(long feedId);
 }

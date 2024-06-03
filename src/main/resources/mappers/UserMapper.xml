@@ -47,4 +47,15 @@
         WHERE user_id=#{signedUserId}
     </update>
 
+    <select id="selTest">
+        SELECT user_id AS userId, uid, upw, nm, pic, created_at AS createdAt, updated_at AS updatedAt
+        FROM user
+        <where><!--전체를 가져오고 싶을 때도 있기 때문에-->
+            <if test="userId>0">
+                user_id=#{userId}
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

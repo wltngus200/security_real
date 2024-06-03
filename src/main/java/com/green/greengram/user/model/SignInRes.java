@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor//Json으로 바뀔 때 기본 생성자 필요
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class SignInRes {
     @Schema(example = "1", description = "USER PK")
     private long userId;
