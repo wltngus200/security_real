@@ -43,4 +43,13 @@ public class FeedController {
                 .build();
     }
 
+    @DeleteMapping
+    public ResultDto<Integer> deleteFeed(@ModelAttribute @ParameterObject long feedId){
+        int result=service.deleteFeed(feedId);
+        return ResultDto.<Integer>builder()
+                .statusCode(HttpStatus.OK)
+                .resultData(result)
+                .resultMsg("╰(艹皿艹 ) 으...")
+                .build();
+    }
 }

@@ -6,6 +6,7 @@ import com.green.greengram.feed.model.*;
 import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,4 +77,11 @@ public class FeedService {
 
         return list;
     }
+
+    int deleteFeed(long feedId){
+        String.format("");
+        customFileUtils.deleteFolder("");
+        return mapper.deleteFeed(feedId);
+    }
+
 }

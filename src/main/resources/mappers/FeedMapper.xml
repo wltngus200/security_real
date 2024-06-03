@@ -51,5 +51,13 @@
         LIMIT 4
     </select>
 
+    <delete id="deleteFeed">
+        DELETE feed
+        WHERE feed_id =#{feedId}
+    </delete>
 
+    <delete id="deleteFeedPics">
+        DELETE feed_pics
+        WHERE feed_id=#{feedId}
+    </delete>
 </mapper>

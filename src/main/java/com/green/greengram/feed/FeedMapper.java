@@ -19,4 +19,7 @@ public interface FeedMapper {
     //아직 안 함
     List<FeedCommentGetRes> getFeedComment(long feedId);
 
+    int deleteFeed(long feedId);
+    int deleteFeedPics(long feedId);
+
 }

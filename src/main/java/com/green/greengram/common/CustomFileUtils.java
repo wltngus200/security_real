@@ -70,8 +70,8 @@ public class CustomFileUtils {
     }
 
     //폴더 삭제= 폴더 안에 또 파일이나 폴더가 있으면 삭제 할 수 없다 +내가 폴더를 켜놓고 있어도 지울 수 없다-> 재귀호출로 해결
-    public void deleteFolder(String absoluteFolderPath){//folderPath는 상대주소 ex. " /user/3 "
-        File folder = new File(absoluteFolderPath); //폴더=디렉토리
+    public void deleteFolder(String fullPath){//folderPath는 상대주소 ex. " /user/3 "
+        File folder = new File(fullPath); //폴더=디렉토리
         if(folder.exists()&& folder.isDirectory()){//폴더가 존재하고, 디렉토리라면 작업 (확장자가 없다=폴더)
             File[] files=folder.listFiles();
             //파일 객체로 객체화 해서 배열 형태로 리턴(여러개 일 수 있기 떄문)
