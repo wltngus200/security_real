@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService{
     public UserInfoGetRes getUserInfo(UserInfoGetReq p){
         return mapper.selProfileUserInfo(p);
     }
+
     @Transactional
     public String patchProfilePic(UserProfilePatchReq p){
         String fileNm=customFileUtils.makeRandomFileName(p.getPic());

@@ -7,4 +7,5 @@ public interface UserService {
     int postUser(MultipartFile mf, SignUpPostReq p);
     SignInRes postSignIn(SignInPostReq p);
     UserInfoGetRes getUserInfo(UserInfoGetReq p);
+    String patchProfilePic(UserProfilePatchReq p);
 }

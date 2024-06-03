@@ -1,10 +1,9 @@
 package com.green.greengram.user;
 
 import com.green.greengram.common.CustomFileUtils;
-import com.green.greengram.user.model.SignInPostReq;
-import com.green.greengram.user.model.SignInRes;
-import com.green.greengram.user.model.SignUpPostReq;
-import com.green.greengram.user.model.User;
+import com.green.greengram.user.model.*;
+import org.apache.catalina.util.CustomObjectInputStream;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mindrot.jbcrypt.BCrypt;
@@ -22,6 +21,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -40,6 +41,8 @@ class UserServiceTest {
     String uploadPath;
     @MockBean
     private UserMapper mapper;
+    @Autowired
+    private CustomFileUtils utils;
 
     @Autowired
     private UserService service;
@@ -150,11 +153,60 @@ class UserServiceTest {
 
     @Test
     void getUserInfo() {//기존 파일을 지우고 새로 넣는 것까지
+        UserInfoGetReq p1= new UserInfoGetReq(1,2);
+        UserInfoGetRes result1=new UserInfoGetRes();
+        result1.setNm("test1"); //객체들을 구분하기 위한 값
+        given(mapper.selProfileUserInfo(p1)).willReturn(result1); //가짜 매퍼에게 임무를 줌
+        UserInfoGetReq p2= new UserInfoGetReq(1,2);
+        UserInfoGetRes result2=new UserInfoGetRes();
+        result1.setNm("test2"); //객체들을 구분하기 위한 값
+        given(mapper.selProfileUserInfo(p2)).willReturn(result2); //가짜 매퍼에게 임무를 줌
+
+        UserInfoGetRes res1=service.getUserInfo(p1);
+        assertEquals(result1, res1);
+        UserInfoGetRes res2=service.getUserInfo(p2);
+        assertEquals(result2, res2);
+
     }
 
-    @Test
-    void patchProfilePic() {
-    }
+    @Test//전체 리스트를 가져온다-> 왜......??
+    void patchProfilePic() throws IOException {
+        //서비스를 테스트 : 새로운 파일이 올라오면 PK를 이용해 기존에 있던 폴더를 지우고 다시 만들어 파일 넣음
+        long signedUserId1 = 500;
+        final String ORIGIN_FILE_PATH = String.format("%stest/%s", uploadPath, "a.jpg");
+        String midPath1 = String.format("%suser/%d", uploadPath, signedUserId1);
+        File originFile = new File(ORIGIN_FILE_PATH);
+        File copyFile1 = new File(midPath1, "a.jpg");
 
+        utils.deleteFolder(midPath1);
+        utils.makeFolders("user/" + signedUserId1);
+        Files.copy(originFile.toPath(), copyFile1.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        UserProfilePatchReq p1 = new UserProfilePatchReq();//호출을 위한 파라미터 세팅
+        p1.setSignedUserId(signedUserId1);
+
+        MultipartFile fm1 = new MockMultipartFile("pic", "b.jpg", "image/jpg",
+                new FileInputStream(String.format("%stest/b.jpg", uploadPath)));
+        p1.setPic(fm1);
+
+        String fileNm1=service.patchProfilePic(p1); //null이 아닌지만 체크 랜덤 파일명만 넘어옴
+        assertNotNull(fileNm1,"1. 파일 명이 Null이 넘어왔음");
+        //midPath1폴더 존재, 해당 폴더 파일 1개 존재, 그 파일의 파일 명이 fileNm1과 같아야 함
+        File p=new File(midPath1); //D:\2024_BACK_JI\download\greengram_tdd\\user\500
+        File[] p2=p.listFiles();
+
+        assertEquals(true, p.exists(),"1. midPath1 폴더가 존재하지 않음");
+        assertEquals(1, p2.length,"2. 해당 폴더에 파일이 1개가 아님");
+        assertEquals(fileNm1, p2[0].getName(), "3. 파일 이름이 다름");
+
+
+        //------------------------다른 방법으로 복사 시도----------------------
+        //MultipartFile mf1=new MockMultipartFile("pic","","image/jpg",new FileInputStream(""));
+
+
+
+    }
 
 }
+
+
