@@ -63,7 +63,7 @@ public class CustomFileUtils {
     //파일저장(target 경로/파일명)
     public void transferTo(MultipartFile mf, String target) throws Exception { //문제가 발생하면 내가 해결 안 하고 호출한 자리에서 해결해
         //클라이언트가 서버에 파일을 보내면
-        File saveFile=new File(uploadPath, target); //최종경로 //바꿔주는 작업
+        File saveFile=new File(uploadPath, target); //최종경로+파일이름 //바꿔주는 작업
         mf.transferTo(saveFile);//에러를 감싸주어야함 //transfer되어라
         //파일 객체는 전체 경로, 확장자
         //mf에게 어디에 저장할 지 알려줘야됨

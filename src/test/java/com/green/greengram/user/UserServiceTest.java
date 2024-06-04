@@ -39,7 +39,7 @@ import static org.mockito.Mockito.verify;
 class UserServiceTest {
     @Value("${file.directory}")
     String uploadPath;
-    @MockBean
+    @MockBean //호출이 되었는지 아닌지 알 수 있
     private UserMapper mapper;
     @Autowired
     private CustomFileUtils utils;
@@ -170,13 +170,13 @@ class UserServiceTest {
     }
 
     @Test//전체 리스트를 가져온다-> 왜......??
-    void patchProfilePic() throws IOException {
+    void patchProfilePic() throws IOException {//실제 customfileUtils로 만듦
         //서비스를 테스트 : 새로운 파일이 올라오면 PK를 이용해 기존에 있던 폴더를 지우고 다시 만들어 파일 넣음
         long signedUserId1 = 500;
-        final String ORIGIN_FILE_PATH = String.format("%stest/%s", uploadPath, "a.jpg");
-        String midPath1 = String.format("%suser/%d", uploadPath, signedUserId1);
+        final String ORIGIN_FILE_PATH = String.format("%stest/%s", uploadPath, "a.jpg"); //원본의 위치
+        String midPath1 = String.format("%suser/%d", uploadPath, signedUserId1); //transfer할 위치
         File originFile = new File(ORIGIN_FILE_PATH);
-        File copyFile1 = new File(midPath1, "a.jpg");
+        File copyFile1 = new File(midPath1, "a.jpg"); //target
 
         utils.deleteFolder(midPath1);
         utils.makeFolders("user/" + signedUserId1);
@@ -197,8 +197,12 @@ class UserServiceTest {
 
         assertEquals(true, p.exists(),"1. midPath1 폴더가 존재하지 않음");
         assertEquals(1, p2.length,"2. 해당 폴더에 파일이 1개가 아님");
+        assertEquals(1, p.listFiles().length,"2. 선생님 방법");
         assertEquals(fileNm1, p2[0].getName(), "3. 파일 이름이 다름");
+        File file1=p.listFiles()[0];
+        assertEquals(fileNm1, file1.getName(),"3. 선생님 방법");
 
+        verify(mapper).updProfilePic(p1);
 
         //------------------------다른 방법으로 복사 시도----------------------
         //MultipartFile mf1=new MockMultipartFile("pic","","image/jpg",new FileInputStream(""));
@@ -206,7 +210,6 @@ class UserServiceTest {
 
 
     }
-
 }
 
 

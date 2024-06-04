@@ -1,9 +1,6 @@
 package com.green.greengram.feed.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 //역할: 프론트에 보냄, JSON+응답
@@ -12,6 +9,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class FeedPostRes {//프론트에서 필요한 정보
     //피드를 업로드 하고 바로 보고 싶을 때 내가 보낸 contents, location이 아닌 값(=내가 모르는 값)
     private long feedId; //PK값은 올라가고 나서야 알 수 있다

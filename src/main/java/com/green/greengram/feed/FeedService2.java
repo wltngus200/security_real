@@ -16,19 +16,21 @@ import static com.green.greengram.common.GlobalConst.COMMENT_SIZE_PER_FEED;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FeedServiceImpl implements FeedService {
+public class FeedService2 {
     private final FeedMapper mapper;
     private final CustomFileUtils customFileUtils;
 
     @Transactional
     public FeedPostRes postFeed(List<MultipartFile> fileNames, FeedPostReq p){
-        int result=mapper.postFeed(p); //내용과 위치를 데이터베이스에 올림
+        int result=mapper.postFeed(p);//내용과 위치를 데이터베이스에 올림
 
         if(fileNames==null){
             return FeedPostRes.builder()
                     .feedId(p.getFeedId())
                     .build();
         }
+
+
         //DB에 사진  저장 //Builder가 있다!
         //사진을 올리기 위해 요구되는 정보는 multipartfile과 FeedPostReq에 존재
         //그것을 재구성 해서 PicReq를 제조 Req에는 이미 객체화 되어있다
@@ -51,7 +53,7 @@ public class FeedServiceImpl implements FeedService {
         return FeedPostRes.builder().feedId(req.getFeedId()).pics(req.getFileNames()).build();
     }
 
-    public List<FeedGetRes> getFeed(FeedGetReq p){
+    List<FeedGetRes> getFeed(FeedGetReq p){
         List<FeedGetRes> list=mapper.getFeed(p);
         for(FeedGetRes res:list){
             //사진
@@ -65,14 +67,17 @@ public class FeedServiceImpl implements FeedService {
                 comments.remove(COMMENT_SIZE_PER_FEED-1);
             }
             res.setComments(comments);
+
+
         }
 
         return list;
     }
 
-    public int deleteFeed(long feedId){
+    int deleteFeed(long feedId){
         String.format("");
         customFileUtils.deleteFolder("");
         return mapper.deleteFeed(feedId);
     }
+
 }
