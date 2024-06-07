@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class FeedControllerImpl {
-    private final FeedServiceImpl service;
+    private final FeedService service;
 
     @PostMapping
     public ResultDto<FeedPostRes> postFeed(@RequestPart List<MultipartFile> pics, @RequestPart FeedPostReq p){

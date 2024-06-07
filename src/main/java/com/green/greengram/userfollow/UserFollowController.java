@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserFollowController {
-    ResultDto<Integer> postUerFollow(UserFollowReq p);
+    ResultDto<Integer> postUserFollow(UserFollowReq p);
     ResultDto<Integer> deleteUserFollow(UserFollowReq p);
 }

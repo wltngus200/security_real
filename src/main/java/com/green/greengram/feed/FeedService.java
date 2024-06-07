@@ -11,4 +11,5 @@ import java.util.List;
 public interface FeedService {
     FeedPostRes postFeed(List<MultipartFile> fileNames, FeedPostReq p);
     List<FeedGetRes> getFeed(FeedGetReq p);
+    int deleteFeed(long feedId);
 }

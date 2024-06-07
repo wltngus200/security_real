@@ -1,6 +1,7 @@
 package com.green.greengram.feed.model;
 
 import com.green.greengram.feedcomment.model.FeedCommentGetRes;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@EqualsAndHashCode
 public class FeedGetRes {
     private long feedId;
     private long writerId;

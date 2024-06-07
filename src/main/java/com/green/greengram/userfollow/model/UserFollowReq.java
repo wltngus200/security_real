@@ -2,6 +2,7 @@ package com.green.greengram.userfollow.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.BindParam;
@@ -10,6 +11,7 @@ import java.beans.ConstructorProperties;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class UserFollowReq {
     @BindParam("from_user_id")
     @Schema(example="17", description="팔로우 유저 아이디", requiredMode = Schema.RequiredMode.REQUIRED)

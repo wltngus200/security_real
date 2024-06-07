@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("api/user/follow")
 public class UserFollowControllerImpl implements UserFollowController{
-    private final UserFollowServiceImpl service;
+    private final UserFollowService service;
     @PostMapping
-    public ResultDto<Integer> postUerFollow(@RequestBody UserFollowReq p){
+    public ResultDto<Integer> postUserFollow(@RequestBody UserFollowReq p){
         int result=service.postUserFollow(p);
         return ResultDto.<Integer>builder()
-                .resultData(result)
-                .resultMsg("Hello")
                 .statusCode(HttpStatus.OK)
+                .resultMsg(HttpStatus.OK.toString())
+                .resultData(result) //리턴한 값이 여기 담기는지도 확인
                 .build();
     }
 
