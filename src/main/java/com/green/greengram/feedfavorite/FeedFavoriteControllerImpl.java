@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 public class FeedFavoriteControllerImpl implements FeedFavoriteController{
     private final FeedFavoriteService service;
 
-    @GetMapping
+    @Override
+    @GetMapping()
     public ResultDto<Integer> toggleFavorite(@ModelAttribute FeedFavoriteToggleReq p){
         int result=service.toggleFavorite(p);
         return ResultDto.<Integer>builder()
                 .statusCode(HttpStatus.OK)
-                .resultMsg((result==0?"좋아요 취소":"좋아요 처리")+"ο(=•ω＜=)ρ⌒☆ 좋아요 처음 해봐요")
+                .resultMsg(HttpStatus.OK.toString())
                 .resultData(result)
                 .build();
     }

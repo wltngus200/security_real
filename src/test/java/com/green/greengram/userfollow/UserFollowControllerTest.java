@@ -137,8 +137,8 @@ class UserFollowControllerTest {
                 .params(params) //쿼리스트링
                         //"/api/user/follow?from_user_id=1&to_user_id=2 //위의 숫자를 바꿀 때 마다 바꿔주어야 함
         ).andExpect(status().isOk())
-                .andExpect(content().json(expectedResultJson))
-                .andDo(print());
+        .andExpect(content().json(expectedResultJson))
+        .andDo(print());
         verify(service).deleteUserFollow(p);
     }
 }
