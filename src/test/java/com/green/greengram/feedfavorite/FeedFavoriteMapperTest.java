@@ -21,7 +21,7 @@ class FeedFavoriteMapperTest {
 
     @Test
     void insFeedFavorite() {
-        FeedFavoriteToggleReq all=new FeedFavoriteToggleReq();
+        FeedFavoriteToggleReq all=new FeedFavoriteToggleReq(5,1);
         List<FeedFavoriteEntity> list1=mapper.selFeedFavoriteForTest(all);
         assertEquals(10, list1.size(), "전체 리스트");
 

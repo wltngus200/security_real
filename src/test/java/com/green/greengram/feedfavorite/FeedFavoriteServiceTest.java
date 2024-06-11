@@ -24,12 +24,12 @@ class FeedFavoriteServiceTest {
 
     @Test
     void toggleFavorite() {
-        FeedFavoriteToggleReq req1=new FeedFavoriteToggleReq(); //0
-        req1.setFeedId(1); req1.setUserId(2);
-        FeedFavoriteToggleReq req2=new FeedFavoriteToggleReq(); //1
-        req2.setFeedId(10); req2.setUserId(20);
-        FeedFavoriteToggleReq req3=new FeedFavoriteToggleReq();
-        req3.setFeedId(1); req3.setUserId(4);
+        FeedFavoriteToggleReq req1=new FeedFavoriteToggleReq(1,2); //0
+        //req1.setFeedId(1); req1.setUserId(2);
+        FeedFavoriteToggleReq req2=new FeedFavoriteToggleReq(10, 20); //1
+        //req2.setFeedId(10); req2.setUserId(20);
+        FeedFavoriteToggleReq req3=new FeedFavoriteToggleReq(1, 4);
+        //req3.setFeedId(1); req3.setUserId(4);
 
         given(mapper.delFeedFavorite(req1)).willReturn(0);
         given(mapper.delFeedFavorite(req2)).willReturn(1);

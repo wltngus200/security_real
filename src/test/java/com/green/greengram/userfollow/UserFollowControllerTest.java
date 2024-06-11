@@ -71,7 +71,7 @@ class UserFollowControllerTest {
                 .andExpect(status().isOk()) //200 코드가 날아왔는지 확인
                 .andExpect(content()/*JSON*/.json(expectedResultJson))//*실제 넘어온 데이터(ResultDto)가 String으로 내가 원하는 값인지*/)
                 //실제 값을 적기엔 어려움(이스케이프 문자 등 들어감)
-                .andDo(print()); //perform이 끝나고 이거 하자 콘솔에다가 찍어라
+                .andDo/*perform이 끝나고 이거 하자*/(print()/*콘솔에다가 찍어라*/);
 
         verify(service).postUserFollow(p);
     }
