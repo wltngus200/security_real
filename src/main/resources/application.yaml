@@ -27,6 +27,19 @@ springdoc:
   cache:
     disabled: true
 
+# custom 속성 지정
+# 키 이름은 내 맘대로, value를 인지할 수만 있으면 상관 X(뭘 쓰던 상관이 없지만 노출하면 안되고 30자 정도 되어야 함)
+# 바뀌면 이전의 키로 작성된 애들은 쓸수 없어 로그아웃 처리
+# 아래 자료들을 가져와서 자바의 멤버필드에 넣고 토큰 발행용도
+app:
+  jwt:
+    secret: DaeguGreenArtAcademyClass502RoomForJavaSpringBootFighting
+    #JWT 만들 때 사용하는 열쇠(암호화) > 나중에 복호화 할 때도 사용
+    header-schema-name: authorization #보통 해더에 JWT 토큰 담음, 키 이름으로는 뭘 쓸지 상관없으나 프론트와 협의
+    token-type: Bearer #토큰의 종류 Bearer는 JWT, OAuth(주로 소셜로그인-회원가입을 자동화-에 사용)를 의미 프리픽스로 항상 들어감
+    access-token-expiry: 1_800_000 #토큰 만료시간 1000ms=1초 (7_200_000=2시간)
+    refresh-token-expiry: 1_296_000_000 #토큰 만료시간 15일
+
 
 #위는 프로필 설정 X 이름 X =>디폴트 / 디폴트 쓰면 프로필마다 저 내용 다 쓸 필요 X
 #내가 손으로 테스트 할 때는 SQL이 실행 안 되길 바람>>어떨떄는되고 어떨때는 안 되길 바람

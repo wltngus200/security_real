@@ -12,4 +12,6 @@ public class SignInPostReq {
     private String uid;
     //@Schema(example="1212", description = "유저 비밀번호")
     private String upw;
+
+    private String accessToken;
 }

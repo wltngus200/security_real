@@ -1,9 +1,14 @@
 package com.green.greengram.user;
 
+import com.green.greengram.common.CookieUtils;
 import com.green.greengram.common.CustomFileUtils;
+import com.green.greengram.security.JwtTokenProvider;
+import com.green.greengram.security.MyUserDetails;
 import com.green.greengram.user.model.*;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,10 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserServiceImpl implements UserService{
     private final UserMapper mapper;
     private final CustomFileUtils customFileUtils;
+    //비밀번호 라이브러리를 바꿔도 수정을 안 해도 됨
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final CookieUtils cookieUtils;
 
     public int postUser(MultipartFile mf, SignUpPostReq p){
         //암호화
-        String hash= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());
+        String hash=passwordEncoder.encode(p.getUpw());
+        //String hash= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());
         p.setUpw(hash);
         String fileName= customFileUtils.makeRandomFileName(mf);
         p.setPic(fileName);
@@ -43,6 +53,14 @@ public class UserServiceImpl implements UserService{
         }else if(!BCrypt.checkpw(p.getUpw(),user.getUpw())){
             throw new RuntimeException("(o゜▽゜)o☆ 비밀번호 틀렸쪄");
         }
+        //UserDetails userDetails=new MyUserDetails(user.getUserId(),"ROLE_USER");
+        UserDetails userDetails=MyUserDetails.builder().userId(user.getUserId()).role("ROLE_USER").build();
+
+        String accessToken= jwtTokenProvider.generateAccessToken(userDetails);
+        String refreshToken=jwtTokenProvider.generateRefreshToken(userDetails);
+
+        //refreshToken은 보안 쿠키를 이용해서 처리
+
         return SignInRes.builder()
                 .nm(user.getNm())
                 .pic(user.getPic())

@@ -113,7 +113,7 @@ class FeedFavoriteControllerTest {
         result.put("resultMsg", HttpStatus.OK.toString());
         result.put("resultData", resultData);
 
-        String expectedResJson=om.writeValueAsString(result);
+        String expectedResJson= om.writeValueAsString(result);
 
         //when 통신을 함
         mvc.perform(get("/api/feed/favorite").params(params))
