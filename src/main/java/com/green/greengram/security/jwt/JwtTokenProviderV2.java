@@ -1,7 +1,9 @@
-package com.green.greengram.security;
+package com.green.greengram.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengram.common.model.AppProperties;
+import com.green.greengram.security.MyUser;
+import com.green.greengram.security.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -29,22 +31,28 @@ public class JwtTokenProviderV2 {
         //암호화, 복호화 할 때 사용하는 키를 생성하는 부분, decode 메소드에 보내는 아규먼트 값은 우리가 설정한 문자열
     }
 
-    public String generateAccessToken(UserDetails userDetails){
-        return generateToken(userDetails, appProperties.getJwt().getRefreshTokenExpiry());
+    public String generateAccessToken(MyUser myUser){
+        return generateToken(myUser, appProperties.getJwt().getRefreshTokenExpiry());
         //yaml파일에서 app.jwt.refresh-token-expiry 내용을 가져오는 부분
     }
-    private String generateToken(UserDetails userDetails, long tokenValidMilliSecond){
+
+    public String generateRefreshToken(MyUser myUser) {
+        return generateToken(myUser, appProperties.getJwt().getRefreshTokenExpiry());
+        //yaml파일에서 app.jwt.refresh-token-expiry 내용을 가져오는 부분
+    }
+
+    private String generateToken(MyUser myUser, long tokenValidMilliSecond){
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis())) //jwt 생성일시
                 .expiration(new Date(System.currentTimeMillis()+tokenValidMilliSecond)) //jwt만료일시
-                .claims(createClaims(userDetails)) //claims는 payload에 저장하고 싶은 내용 저장
+                .claims(createClaims(myUser)) //claims는 payload에 저장하고 싶은 내용 저장
                 .signWith(secretKey, Jwts.SIG.HS512) //서명(jwt암호화 선택, 위변조 검증)
                 .compact();//토큰 생성
     }// 메소드 호출.메소드 호출.메소드 호출 >> 체이닝 기법(메소드 호출 시 자신의 주소값 리턴)
 
-    private Claims createClaims(UserDetails userDetails){
+    private Claims createClaims(MyUser myUser){
         try{
-            String json = om.writeValueAsString(userDetails); //객체 to json
+            String json = om.writeValueAsString(myUser); //객체 to json
             return Jwts.claims().add("signedUser", json).build(); //claims에 json 저장
         }catch(Exception e){
             e.printStackTrace();

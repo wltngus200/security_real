@@ -13,19 +13,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Data
-@Builder
 public class MyUserDetails implements UserDetails {
-    private long userId; //PK값
-    private String role; //사용자 권한
-//    @Builder.Default //주소값을 담아줌
-//    private List<String> roles=new ArrayList(); //사용자의 권한
+    private MyUser myUser;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //List<GrantedAuthority> list = new ArrayList();
         //list.add(new SimpleGrantedAuthority(role));
         //return list;
-        return Collections.singletonList(new SimpleGrantedAuthority(role));
+        return Collections.singletonList(new SimpleGrantedAuthority(myUser.getRole()));
     }
 
     @Override

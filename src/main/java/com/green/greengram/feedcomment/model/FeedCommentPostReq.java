@@ -16,6 +16,8 @@ public class FeedCommentPostReq {
     //인터페이스와 xml이 매칭 되어 DAO메소드 생성 //그 때에 사용할 파라미터이면서 PK값을 저장하는 역할
 
     private long feedId;
+
+    @JsonIgnore
     private long userId;
     private String comment;
 }

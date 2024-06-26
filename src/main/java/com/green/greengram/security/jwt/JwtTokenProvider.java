@@ -1,7 +1,9 @@
-package com.green.greengram.security;
+package com.green.greengram.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengram.common.model.AppProperties;
+import com.green.greengram.security.MyUser;
+import com.green.greengram.security.MyUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -43,12 +45,12 @@ public class JwtTokenProvider {
     }
     private String generateToken(UserDetails userDetails, long tokenValidMilliSecond){
         return Jwts.builder()
-                //헤더
+                //헤더 Header
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+tokenValidMilliSecond))
-                //내용
+                //내용 Payload
                 .claims(createClaims(userDetails))
-                //서명
+                //서명 Signature
                 .signWith(secretKey, Jwts.SIG.HS512) //서명처리(jwt 암호화 선택)
                 .compact();//제일 마지막에 호출 되는 것이 리턴하는 타입 =String
 
@@ -76,7 +78,10 @@ public class JwtTokenProvider {
         try{
             Claims claims=getAllClaims(token); //jwt(인증 코드)에 저장된 claims를 얻어옴
             String json=(String)claims.get("signedUser"); //claims에 저장 되어있는 값을 얻어온다 (json)
-            return om.readValue(json, MyUserDetails.class); //json -> 객체로 변화 (userDetails(myUserDetails))
+            MyUser myUser=om.readValue(json, MyUser.class);//json -> 객체로 변화 (userDetails(myUserDetails))
+            MyUserDetails myUserDetails=new MyUserDetails();
+            myUserDetails.setMyUser(myUser);
+            return myUserDetails;
             //jwt를 열어 myUserDetails를 보기 위한 메소드
         }catch(Exception e){
             e.printStackTrace();

@@ -2,11 +2,15 @@ package com.green.greengram.user;
 
 import com.green.greengram.common.model.ResultDto;
 import com.green.greengram.user.model.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,14 +28,26 @@ public class UserControllerImpl {
                 .build();
     }
     @PostMapping("sign-in")
-    public ResultDto<SignInRes> postSignIn(@RequestBody SignInPostReq p){
-        SignInRes result=service.postSignIn(p);
+    public ResultDto<SignInRes> postSignIn(HttpServletResponse res, @RequestBody SignInPostReq p){
+        SignInRes result=service.postSignIn(res, p);
         return ResultDto.<SignInRes>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg("♪(´▽｀) 어서 와")
                 .resultData(result)
                 .build();
     }
+
+    @GetMapping("access-token")
+    public ResultDto<Map> getRefreshToken(HttpServletRequest req){
+        Map map=service.getAccessToken(req);
+        return ResultDto.<Map>builder()
+                .statusCode(HttpStatus.OK)
+                .resultMsg("Access Token 발급")
+                .resultData(map)
+                .build();
+    }
+
+
     @GetMapping
     public ResultDto<UserInfoGetRes> getUserInfo(@ParameterObject @ModelAttribute UserInfoGetReq p){
         UserInfoGetRes result=service.getUserInfo(p);

@@ -1,11 +1,12 @@
 package com.green.greengram.security;
 
+import com.green.greengram.security.jwt.JwtAuthenticationAccessDeniedHandler;
+import com.green.greengram.security.jwt.JwtAuthenticationFilter;
+import com.green.greengram.security.jwt.JwtAuthhenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,6 +58,7 @@ public class SecurityConfiguration {
                 //내가 준 HTML문서에서 요청이 들어오면 좋고 아니면 싫음
                 .authorizeHttpRequests(auth->auth.requestMatchers("/api/user/sign-up",/*로그인 되어있지 않아도 사용 가능해야함*/ "/api/user/sign-in",
                                 "/swagger","/swagger-ui/**", "/v3/api-docs/**", //스웨거 보이게
+                                "/pic/**", //사진 WebMvcConfigurer 참고
                                 "/", "/index.html"/*골격*/,
                                 "/css/**"/*화면 색, 위치 등을 관장*/,"/js/**"/*이러한 동작을 했을때 이렇게 하자!*/,"/static/**", //프론트 화면 보이게
                         //자바스크립트가 없으면 두가지는 정적이 됨
@@ -76,6 +78,8 @@ public class SecurityConfiguration {
                 //
                 //<-> 바뀌는 부분만 그림 ajax
                 .addFilterBefore/*이 필터 이전에 끼워짐*/(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception->exception.authenticationEntryPoint(new JwtAuthhenticationEntryPoint())
+                                                            .accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler()))
                 .build();
 
                 /*
