@@ -30,16 +30,6 @@ public class SecurityConfiguration {
         //파라미터 없이 내가 직접 new 객체화 해서 리턴으로 빈등록 가능
 
 
-
-       /* 이거 뭐지..?
-            return httpSecurity.sessionManagement(new Customizer<SessionManagementConfigurer<HttpSecurity>>()){
-            @Override
-            public void customize(SessionManagementConfigurer<HttpSecurity> session) {
-                session.sessionCreationPolicy(SecurityCreationPolicy.STATELESS);
-            }
-        }*/
-
-
         return httpSecurity.sessionManagement(session -> /*람다식*/
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS/*상태 없음*/)) //jwt를 할 것이기 때문에 필요 X
                                                     //세팅: 시큐리티에서 세션 사용하지 않겠다(람다식)
