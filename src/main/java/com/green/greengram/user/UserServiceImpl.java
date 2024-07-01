@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
         MyUser myUser=MyUser.builder().userId(user.getUserId()).role("ROLE_USER"/*하드 코딩*/).build();
 
         //두가지 token에 myUser(유저 PK, 권한 정보를 담는다) -> why? : accessToken이 계속 백엔드로 요청을 보낼 때 Header에 넣어서 보내준다
-        //refreshToken에 myUser담은 이유 : access토큰 만료 시 refresh 토큰 속 정보로 재발급
+        //refreshToken에 myUser담은 이유 : access토큰 만료 시 refresh 토큰 속 정보로 재발급(refresh 토큰 속 정보를 access 토큰에 넣음)
         //요청이 올 때마다 Request에 token이 담겨있는지 체크(filter에서 한다)
         //token에 담겨져 있는 myUser를 빼내서 사용하기 위해서 myUser를 담았다.
         /*카페에서 앱: 세션

@@ -40,8 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter/*추상 클래
             //MyUserDetails의 getAuthorities
 
             //혹시나 싶어 null check
-            if(auth!=null){
+            if(auth!=null){//객체 주소값을 담으면 인증되었다고 인식
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                //SecurityContextHolder.getContext()에 Authentication 객체 주소값을 담으면 로그인으로 인식
             }
         }
         filterChain.doFilter(request,response);
