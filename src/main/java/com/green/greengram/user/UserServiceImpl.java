@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,11 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProviderV2 jwtTokenProvider;
     private final CookieUtils cookieUtils;
-    private final AuthenticationFacade authenticationFacade;
+    private final AuthenticationFacade authenticationFacade; //PK값 제공 getLoginUserId();
     private final AppProperties appProperties;
+
+    //SecurityContextHolder > Context
+    //          > Authentication(UsernamePasswordAuthenticationToken) > MyUserDetails > MyUser
 
     public int postUser(MultipartFile mf, SignUpPostReq p){
         //암호화
@@ -44,10 +48,11 @@ public class UserServiceImpl implements UserService{
 
         //사진
         if(mf==null){return result;}
-        String path=String.format("user/%s",p.getUserId());
-        String target=String.format("%s/%s", path, fileName);
+
         try{
+            String path=String.format("user/%s",p.getUserId());
             customFileUtils.makeFolders(path);
+            String target=String.format("%s/%s", path, fileName);
             customFileUtils.transferTo(mf, target);
         }catch(Exception e){
             e.printStackTrace();
@@ -63,28 +68,36 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("(o゜▽゜)o☆ 비밀번호 틀렸쪄");
         }
         //UserDetails userDetails=new MyUserDetails(user.getUserId(),"ROLE_USER");
-        MyUser myUser=MyUser.builder().userId(user.getUserId()).role("ROLE_USER").build();
+        MyUser myUser=MyUser.builder().userId(user.getUserId()).role("ROLE_USER"/*하드 코딩*/).build();
 
+        //두가지 token에 myUser(유저 PK, 권한 정보를 담는다) -> why? : accessToken이 계속 백엔드로 요청을 보낼 때 Header에 넣어서 보내준다
+        //refreshToken에 myUser담은 이유 : access토큰 만료 시 refresh 토큰 속 정보로 재발급
+        //요청이 올 때마다 Request에 token이 담겨있는지 체크(filter에서 한다)
+        //token에 담겨져 있는 myUser를 빼내서 사용하기 위해서 myUser를 담았다.
+        /*카페에서 앱: 세션
+         카페에서 쿠폰: 엑세스 토큰
+         필요한 정보를 계속 들고 있지 않고 들고오게 하기 위함*/
         String accessToken= jwtTokenProvider.generateAccessToken(myUser);
         String refreshToken=jwtTokenProvider.generateRefreshToken(myUser);
 
-
         //refreshToken은 보안 쿠키를 이용해서 처리
+        //refreshToken은 보안 쿠키를 이용해 처리(pront가 따로 작업을 하지 않아도 아래 cookie 값은 항상 넘어온다.)
+        //쿠키는 항상 넘어오기 때문에 refreshToken이 필요 없어도 계속 보냄
         int refreshTokenMaxAge=appProperties.getJwt().getRefreshTokenCookieMaxAge();
         cookieUtils.deleteCookie(res, "refresh-token");
         cookieUtils.setCookie(res, "refresh-token", refreshToken, refreshTokenMaxAge);
 
 
         return SignInRes.builder()
+                .userId(user.getUserId())
                 .nm(user.getNm())
                 .pic(user.getPic())
-                .userId(user.getUserId())
+                .accessToken(accessToken)
                 .build();
     }
 
     public Map getAccessToken(HttpServletRequest req){
         Cookie cookie=cookieUtils.getCookie(req, "refresh-token");
-
 
         if(cookie==null){ //refresh 토큰 존재
             throw new RuntimeException();
@@ -93,9 +106,10 @@ public class UserServiceImpl implements UserService{
         if(!jwtTokenProvider.isValidateToken(refreshToken)){ //시간이 만료되지 않음
             throw new RuntimeException();
         }
+        //UserDetails auth=jwtTokenProvider.
         Authentication auth=jwtTokenProvider.getAuthentication(refreshToken);
 
-        Map map=new HashMap();
+        Map map=new HashMap(); //안 쓰는 걸 추천
         map.put("accessToken", "");
         return map;
     }

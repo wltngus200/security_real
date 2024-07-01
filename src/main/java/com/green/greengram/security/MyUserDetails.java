@@ -1,7 +1,6 @@
 package com.green.greengram.security;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@Setter
+@Getter
 public class MyUserDetails implements UserDetails {
     private MyUser myUser;
 

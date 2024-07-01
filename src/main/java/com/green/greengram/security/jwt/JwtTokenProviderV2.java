@@ -17,6 +17,13 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+
+//1. JWT 생성
+//2. Request(요청)의 Header에서 Token값 얻기
+//3. 확인(validate: 토큰 변질없나 만료시간 지났나?)
+//4. Claim(data) 넣고 빼기
+
+
 @Slf4j
 @Component
 public class JwtTokenProviderV2 {
@@ -46,6 +53,7 @@ public class JwtTokenProviderV2 {
                 .issuedAt(new Date(System.currentTimeMillis())) //jwt 생성일시
                 .expiration(new Date(System.currentTimeMillis()+tokenValidMilliSecond)) //jwt만료일시
                 .claims(createClaims(myUser)) //claims는 payload에 저장하고 싶은 내용 저장
+
                 .signWith(secretKey, Jwts.SIG.HS512) //서명(jwt암호화 선택, 위변조 검증)
                 .compact();//토큰 생성
     }// 메소드 호출.메소드 호출.메소드 호출 >> 체이닝 기법(메소드 호출 시 자신의 주소값 리턴)
@@ -73,7 +81,10 @@ public class JwtTokenProviderV2 {
         try{
             Claims claims=getAllClaims(token);//jwt(인증코드)에 저장되어있는 Claims를 얻어온다.
             String json=(String)claims.get("signedUser");///Claims에 저장되어 있는 값을 얻어옴 (JSON데이터)
-            return om.readValue(json, MyUserDetails.class);
+            MyUser myUser=om.readValue(json, MyUser.class);//json -> 객체로 변화 (userDetails(myUserDetails))
+            MyUserDetails myUserDetails=new MyUserDetails();
+            myUserDetails.setMyUser(myUser);
+            return myUserDetails;
         } catch (Exception e){
             e.printStackTrace();
             return null;
@@ -107,15 +118,18 @@ public class JwtTokenProviderV2 {
     //요청이 오면 JWT를 열어보는 부분 >> 헤더에서 토큰(JWT)를 꺼낸다
     public String resolveToken(HttpServletRequest req){ //요청이 오면 jwt를 열어보는 부분>>헤더에서 Jwt(토큰)을 꺼낸다
         //front->back 로그인 요청을 보낼 때 항상 jwt를 보낼 건데 header에 저장해서 보낸다
-        String auth=req.getHeader(appProperties.getJwt().getHeaderSchemaName());
-        //String auth=req.getHeader("authorization");과 같다 프론트와의 약속(얼마든지 변경가능), key값은 변경가능
-        if (auth==null){return null;}//통과했다=FE가 header에 authorization 키에 데이터를 담아서 보냈다
-        //auth에는 "Bearer JWT" 문자열이 존재, 문자열이 Bearer로 시작하는지 체크
+        String jwt=req.getHeader(appProperties.getJwt().getHeaderSchemaName());
+        //String jwt=req.getHeader("authorization");과 같다 프론트와의 약속(얼마든지 변경가능), key값은 변경가능
+        if (jwt==null){return null;}//통과했다=FE가 header에 authorization 키에 데이터를 담아서 보냈다
+                                    //auth에는 "Bearer JWT" 문자열이 존재, 문자열이 Bearer로 시작하는지 체크
 
-        //if(auth.startsWith("Bearer")) //auth에 저장 된 문자열이 Bearer로 시작하면 true, 아니면 false)
-        if(!auth.startsWith(appProperties.getJwt().getTokenType())){
+        //if(jwt.startsWith("Bearer")) //auth에 저장 된 문자열이 Bearer로 시작하면 true, 아니면 false -> 프론트와 협의
+        //authorization : Bearer JWT 문자열
+        if(!jwt.startsWith(appProperties.getJwt().getTokenType())){
             return null;
         }
-        return auth.substring(appProperties.getJwt().getTokenType().length()).trim();
+
+        //순수한 JWT문자열만 뽑아내기 위한 문자열 자르기 + trim():양 쪽 빈칸 제거
+        return jwt.substring(appProperties.getJwt().getTokenType().length()).trim();
     }
 }

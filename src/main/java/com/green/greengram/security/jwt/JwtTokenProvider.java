@@ -78,10 +78,7 @@ public class JwtTokenProvider {
         try{
             Claims claims=getAllClaims(token); //jwt(인증 코드)에 저장된 claims를 얻어옴
             String json=(String)claims.get("signedUser"); //claims에 저장 되어있는 값을 얻어온다 (json)
-            MyUser myUser=om.readValue(json, MyUser.class);//json -> 객체로 변화 (userDetails(myUserDetails))
-            MyUserDetails myUserDetails=new MyUserDetails();
-            myUserDetails.setMyUser(myUser);
-            return myUserDetails;
+            return om.readValue(json,MyUserDetails.class);
             //jwt를 열어 myUserDetails를 보기 위한 메소드
         }catch(Exception e){
             e.printStackTrace();

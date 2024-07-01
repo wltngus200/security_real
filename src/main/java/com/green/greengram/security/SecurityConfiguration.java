@@ -2,7 +2,7 @@ package com.green.greengram.security;
 
 import com.green.greengram.security.jwt.JwtAuthenticationAccessDeniedHandler;
 import com.green.greengram.security.jwt.JwtAuthenticationFilter;
-import com.green.greengram.security.jwt.JwtAuthhenticationEntryPoint;
+import com.green.greengram.security.jwt.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,17 +16,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration //항상 bean이 붙은 메소드가 존재 함
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter; //DI(@Configuration으로 빈등록 되어있음)
 
 
-    @Bean //어노테이션 메소드가 있으면 스프링 컨테이너가 무조건 호출 파라미터 주소값을 받을 수 있는 애도 가지고있음
+    /*Security와 관련된 빈등록을 여러개 -> 메소드 레벨 빈등록=나중에 취합하기 좋음
+        메소드 빈등록으로 하지 않으면 각각 클래스로 만들어야 한다.*/
+    @Bean //메소드 타입의 빈등록(파라미터, 리턴타입 중요) 파라미터는 빈등록할 때 필요한 객체
+    //어노테이션 메소드가 있으면 스프링 컨테이너가 무조건 호출 파라미터 주소값을 받을 수 있는 애도 가지고있음
     //메소드에만 적용 가능 스프링컨테이너가 무조건 호출 파라미터는 다른 곳에서 빈등록을 하거나 스프링이 줄 수 있는 애로
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity/*라이브러리에 빈등록 되어있음+스프링이 DI*/) throws Exception{
         //이 타입으로 담을 수 있는 객체를 생성(다형성)
-        //람다식~
+
         //파라미터 없이 내가 직접 new 객체화 해서 리턴으로 빈등록 가능
 
-
+        //람다식~
 
        /* 이거 뭐지..?
             return httpSecurity.sessionManagement(new Customizer<SessionManagementConfigurer<HttpSecurity>>()){
@@ -78,7 +81,7 @@ public class SecurityConfiguration {
                 //
                 //<-> 바뀌는 부분만 그림 ajax
                 .addFilterBefore/*이 필터 이전에 끼워짐*/(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception->exception.authenticationEntryPoint(new JwtAuthhenticationEntryPoint())
+                .exceptionHandling(exception->exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                                                             .accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler()))
                 .build();
 

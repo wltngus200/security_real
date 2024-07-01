@@ -16,4 +16,6 @@ public class SignInRes {
     private String nm;
     @Schema(example = "djh43jhdbqh1-@d34", description = "USER IMAGE")
     private String pic;
+
+    private String accessToken;
 }
