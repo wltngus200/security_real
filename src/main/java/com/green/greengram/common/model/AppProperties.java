@@ -12,6 +12,7 @@ import java.util.Locale;
 public class AppProperties {
     private final Jwt jwt=new Jwt();
     //jwt는 yaml의 값(대 소문자 구분 X) static을 빼도 됨(이너클래스일때만 static 붙이기 가능)
+    private final Oauth2 oauth2=new Oauth2();
 
     @Getter
     @Setter
@@ -27,6 +28,13 @@ public class AppProperties {
             this.refreshTokenExpiry=refreshTokenExpiry;
             this.refreshTokenCookieMaxAge=(int)(refreshTokenExpiry*0.001); //ms->s 쿠키는 초값 사용
         }
+    }
+    @Getter
+    @Setter
+    public static class Oauth2{
+        private String authorizationRequestCookieName;
+        private String redirectUriParamCookieName;
+        private int cookieExpirySeconds;
     }
 
 }

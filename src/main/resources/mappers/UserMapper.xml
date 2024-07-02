@@ -11,9 +11,10 @@
     </insert>
 
     <select id="getUserId">
-        SELECT user_id, uid, upw, nm, pic, created_at, updated_at
+        SELECT user_id AS userId, uid, upw, nm, pic, provider_type AS providerType, created_at AS createdAt, updated_at AS updatedAt
         FROM user
         WHERE uid=#{uid}
+        AND provider_type=#{providerType}
     </select>
 
     <select id="selProfileUserInfo">

@@ -68,20 +68,20 @@ public class JwtTokenProviderV2 {
         return null;
     }
 
-    public Claims getAllClaims(String token){
+    public Claims/*내용(Payload)에 담기는 것*/ getAllClaims(String token){
         return Jwts
                 .parser()
-                .verifyWith(secretKey) //똑같은 키로 복호화
+                .verifyWith(secretKey/*객체 생성되며 final*/) //똑같은 키로 복호화
                 .build()
                 .parseSignedClaims(token)
-                .getPayload(); //jwt안에 들어있는 payload(claims)를 리턴
+                .getPayload/*내용*/(); //jwt안에 들어있는 payload(claims)를 리턴
     }
 
-    private UserDetails getUserDetailsFromToken(String token){
+    private UserDetails/*다형성*/ getUserDetailsFromToken(String token){
         try{
             Claims claims=getAllClaims(token);//jwt(인증코드)에 저장되어있는 Claims를 얻어온다.
             String json=(String)claims.get("signedUser");///Claims에 저장되어 있는 값을 얻어옴 (JSON데이터)
-            MyUser myUser=om.readValue(json, MyUser.class);//json -> 객체로 변화 (userDetails(myUserDetails))
+            MyUser myUser/*id, 역할*/=om.readValue(json, MyUser.class);//json -> 객체로 변화 (userDetails(myUserDetails))
             MyUserDetails myUserDetails=new MyUserDetails();
             myUserDetails.setMyUser(myUser);
             return myUserDetails;
@@ -92,7 +92,7 @@ public class JwtTokenProviderV2 {
     }
 
     //SpringContextHolder에 저장할 자료를 세팅(나중에 Service단에서 빼서 쓸 값, 로그인 처리, 인가 처리를 위함
-    public Authentication getAuthentication(String token) {
+    public Authentication/*인증*/ getAuthentication(String token) {
         UserDetails userDetails = getUserDetailsFromToken(token); //MyUserDetails 객체 주소값 저장
         return userDetails == null
                 ? null

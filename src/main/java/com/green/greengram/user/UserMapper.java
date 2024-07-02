@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     int postUser(SignUpPostReq p);
-    User getUserId(String uid);
+    User getUserId(SignInPostReq p);
     UserInfoGetRes selProfileUserInfo(UserInfoGetReq p);
     int updProfilePic(UserProfilePatchReq p);
 

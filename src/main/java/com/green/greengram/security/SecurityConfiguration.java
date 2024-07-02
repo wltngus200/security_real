@@ -80,8 +80,8 @@ public class SecurityConfiguration {
                 //
                 //<-> 바뀌는 부분만 그림 ajax
                 .addFilterBefore/*이 필터 이전에 끼워짐*/(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception->exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                                                            .accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler()))
+                .exceptionHandling/*에러*/(exception->exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint()/*401 에러*/)
+                                                            .accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler())/*403 에러*/)
                 .build();
 
                 /*

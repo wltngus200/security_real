@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter/*추상 클래
             //token으로부터 myUser 얻고 MyUserDetail 에 담고 UsernamePasswordAuthenticationToken 에 담아 리턴
             //UsernamePasswordAuthenticationToken이 Authentication의 자식 클래스
 
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
+            Authentication/*인증*/ auth = jwtTokenProvider.getAuthentication(token);
             //getAuthorities 인가처리를 위해 Collection을 return
             //MyUserDetails의 getAuthorities
 

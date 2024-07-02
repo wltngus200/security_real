@@ -62,7 +62,9 @@ public class UserServiceImpl implements UserService{
     }
 
     public SignInRes postSignIn(HttpServletResponse res, SignInPostReq p){
-        User user=mapper.getUserId(p.getUid());
+        p.setProviderType(SignInProviderType.LOCAL.name().toUpperCase());
+        //p.setProviderType("LOCAL")와 같음
+        User user=mapper.getUserId(p);
         if(user==null){throw new RuntimeException("(′д｀σ)σ 너는 누구야?");
         }else if(!BCrypt.checkpw(p.getUpw(),user.getUpw())){
             throw new RuntimeException("(o゜▽゜)o☆ 비밀번호 틀렸쪄");
