@@ -1,16 +1,21 @@
 spring:
+  config:
+    import: optional:file:.env
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/greengram2024_tdd
-    username: root
-    password: green502
+    url: ${DEFAULT.DB_URL}
+    username: ${DEFAULT.USER_NAME}
+    password: ${DEFAULT.PASSWORD}
 
   servlet:
     multipart:
       max-file-size: 5MB
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
 
 file:
-  directory: D:\2024_BACK_JI\download\greengram_tdd\
+  directory: ${DEFAULT.FILE_PATH}
 
 mybatis:
   mapper-locations: mappers/**/*.xml
@@ -33,7 +38,7 @@ springdoc:
 # 아래 자료들을 가져와서 자바의 멤버필드에 넣고 토큰 발행용도
 app:
   jwt:
-    secret: DaeguGreenArtAcademyClass502RoomForJavaSpringBootFighting
+    secret: ${JWT_SECRET}
     #JWT 만들 때 사용하는 열쇠(암호화) > 나중에 복호화 할 때도 사용
     header-schema-name: authorization #보통 해더에 JWT 토큰 담음, 키 이름으로는 뭘 쓸지 상관없으나 프론트와 협의
     token-type: Bearer #토큰의 종류 Bearer는 JWT, OAuth(주로 소셜로그인-회원가입을 자동화-에 사용)를 의미 프리픽스로 항상 들어감
@@ -44,6 +49,36 @@ app:
 #위는 프로필 설정 X 이름 X =>디폴트 / 디폴트 쓰면 프로필마다 저 내용 다 쓸 필요 X
 #내가 손으로 테스트 할 때는 SQL이 실행 안 되길 바람>>어떨떄는되고 어떨때는 안 되길 바람
 #위랑 밑은 다른 파일
+
+#actuator
+management:
+  #  각 엔드포인트 설정
+  #  엔드포인트 => URL
+  endpoint:
+    health:
+      #      /actuator/health의 디테일한 정보를 표시
+      show-details: always
+
+  # 모든 엔드포인트 전체 설정
+  endpoints:
+    web:
+      exposure:
+        #        모든 End Point 를 웹에 노출 하겠다.
+        #        include: "*"
+        include: "*"
+  info:
+    #      /actuator/java의 디테일한 정보를 표시
+    java:
+      enabled: true
+    #      /actuator/os의 디테일한 정보를 표시
+    os:
+      enabled: true
+    #      /actuator/env의 디테일한 정보를 표시
+    env:
+      enabled: true
+  server:
+    port: 8080
+
 
 ---
 spring:
