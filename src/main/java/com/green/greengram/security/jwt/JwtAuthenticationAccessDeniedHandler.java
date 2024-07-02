@@ -17,3 +17,4 @@ public class JwtAuthenticationAccessDeniedHandler implements AccessDeniedHandler
         response.sendError(HttpServletResponse.SC_FORBIDDEN); //403에러 리턴
     }
 }
+//
