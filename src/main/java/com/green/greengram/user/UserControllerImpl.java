@@ -39,7 +39,7 @@ public class UserControllerImpl {
 
     @GetMapping("access-token")
     public ResultDto<Map> getRefreshToken(HttpServletRequest req/*요청만 있으면 됨(이유: 프론트에서 get요청 URL만 넘겨도 필요한 정보-refreshToken-이 넘어옴(cookie 사용))*/){
-                                                                                        //refreshToken을 로그인을 성공하면 cookie에 담았기 때문 cookie는 요청마다 넘어옴
+                                                                                          //refreshToken을 로그인을 성공하면 cookie에 담았기 때문 cookie는 요청마다 넘어옴
         Map map=service.getAccessToken(req);
         return ResultDto.<Map>builder()
                 .statusCode(HttpStatus.OK)
