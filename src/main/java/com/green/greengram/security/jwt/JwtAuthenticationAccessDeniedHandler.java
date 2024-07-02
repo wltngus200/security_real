@@ -10,6 +10,7 @@ import java.io.IOException;
 
 //권한 없는 사람이 접근시 처리
 public class JwtAuthenticationAccessDeniedHandler implements AccessDeniedHandler {
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException/*인증 거부 오류*/ accessDeniedException)
