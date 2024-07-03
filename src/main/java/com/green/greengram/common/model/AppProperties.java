@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.Locale;
 
 @Getter
@@ -17,11 +18,13 @@ public class AppProperties {
     @Getter
     @Setter
     public static class Jwt{ //각 멤버필드 이름은 yaml(카멜케이스)파일 값과 매칭
+        //yaml 파일내의 값과 매칭 되고, secret는 보안을 위해 .env(JsonIgnore)
         private String secret;
         private String headerSchemaName;
         private String tokenType;
         private long accessTokenExpiry;
         private long refreshTokenExpiry;
+        //yaml에서 저장되지 않음
         private int refreshTokenCookieMaxAge; //JS로 접근 할 수 없는 토큰
 
         public void setRefreshTokenExpiry(long refreshTokenExpiry){
@@ -35,6 +38,7 @@ public class AppProperties {
         private String authorizationRequestCookieName;
         private String redirectUriParamCookieName;
         private int cookieExpirySeconds;
+        private List<String> authorizedRedirectUris;
     }
 
 }

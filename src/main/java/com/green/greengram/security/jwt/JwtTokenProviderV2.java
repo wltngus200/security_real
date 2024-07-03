@@ -126,10 +126,11 @@ public class JwtTokenProviderV2 {
         //if(jwt.startsWith("Bearer")) //auth에 저장 된 문자열이 Bearer로 시작하면 true, 아니면 false -> 프론트와 협의
         //authorization : Bearer JWT 문자열
         if(!jwt.startsWith(appProperties.getJwt().getTokenType())){
+            //토큰에 저장된 문자열이 Bearer(jwt토큰이라는 의미)로 시작하면 True, 아니면 False
             return null;
         }
 
         //순수한 JWT문자열만 뽑아내기 위한 문자열 자르기 + trim():양 쪽 빈칸 제거
-        return jwt.substring(appProperties.getJwt().getTokenType().length()).trim();
+        return jwt.substring(appProperties.getJwt().getTokenType()/*yaml에 Bearer로 저장*/.length()).trim();
     }
 }
