@@ -138,13 +138,12 @@ management:
 
 
 ---
-
 spring:
   config:
     activate:
       on-profile: tdd
   datasource:
-    url: jdbc:mariadb://localhost:3306/second_project_tdd
+    url: jdbc:mariadb://localhost:3306/greengram2024_tdd_test
   sql:
     init:
       mode: always
