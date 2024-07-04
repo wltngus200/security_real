@@ -5,16 +5,19 @@
 <mapper namespace="com.green.greengram.user.UserMapper">
     <insert id="postUser" keyProperty="userId" useGeneratedKeys="true">
         INSERT INTO user
-        (uid, upw, nm, pic)
+        (uid, upw, nm, pic, provider_type)
         VALUES
-        (#{uid}, #{upw}, #{nm}, #{pic})
+        (#{uid}, #{upw}, #{nm}, #{pic}, #{providerType})
     </insert>
 
     <select id="getUserId">
         SELECT user_id AS userId, uid, upw, nm, pic, provider_type AS providerType, created_at AS createdAt, updated_at AS updatedAt
         FROM user
         WHERE uid=#{uid}
-        AND provider_type=#{providerType}
+            AND provider_type=#{providerType}
+        <!--uid와 providerType로 unique(복합 유니크)-->
+        <!--복합 유니크: 소셜 로그인 제공자 별로 하나씩 회원가입 / 따로 : 내가 카카오로 소셜로그인 하면, 다른 사람은 카카오로 못 함-->
+        <!--     (NAVER, 1), (GOOGLE, 1) 가입 가능      -->
     </select>
 
     <select id="selProfileUserInfo">

@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class GreengramTddApplication {
+public class GreengramSecurityApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GreengramTddApplication.class, args);
+        SpringApplication.run(GreengramSecurityApplication.class, args);
     }
 
 }

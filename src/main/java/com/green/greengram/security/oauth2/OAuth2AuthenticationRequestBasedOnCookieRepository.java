@@ -39,13 +39,13 @@ public class OAuth2AuthenticationRequestBasedOnCookieRepository
             this.removeAuthorizationRequestCookies(response);
             return;
         }
-        cookieUtils.setCookie(response, appProperties.getOauth2().getRedirectUriParamCookieName(),
+        cookieUtils.setCookie(response, appProperties.getOauth2().getAuthorizationRequestCookieName(),
                 authorizationRequest,
                 appProperties.getOauth2().getCookieExpirySeconds());
         String redirectUriAfterLogin = request.getParameter(appProperties.getOauth2().getRedirectUriParamCookieName());
         log.info("redirectUriAfterLogin: {}", redirectUriAfterLogin);
         if(StringUtils.isNotBlank(redirectUriAfterLogin)){
-            cookieUtils.setCookie(response, appProperties.getOauth2().getRedirectUriParamCookieName(),
+            cookieUtils.setCookie(response/*응답*/, appProperties.getOauth2().getRedirectUriParamCookieName(),
                     redirectUriAfterLogin, appProperties.getOauth2().getCookieExpirySeconds());
         }
     }

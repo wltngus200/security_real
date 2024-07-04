@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService{
     //          > Authentication(UsernamePasswordAuthenticationToken) > MyUserDetails > MyUser
 
     public int postUser(MultipartFile mf, SignUpPostReq p){
+        //p.setProviderType(SignInProviderType.LOCAL/*자체 회원가입이기 때문에*/.name());//String type의 경우 .name을 적어야함
+        p.setProviderType(SignInProviderType.LOCAL/*자체 회원가입이기 때문에*/);
         //암호화
         String hash=passwordEncoder.encode(p.getUpw());
         //String hash= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());
@@ -86,8 +88,8 @@ public class UserServiceImpl implements UserService{
         //refreshToken은 보안 쿠키를 이용해 처리(pront가 따로 작업을 하지 않아도 아래 cookie 값은 항상 넘어온다.)
         //쿠키는 항상 넘어오기 때문에 refreshToken이 필요 없어도 계속 보냄
         int refreshTokenMaxAge=appProperties.getJwt().getRefreshTokenCookieMaxAge();
-        cookieUtils.deleteCookie(res, "refresh-token");
-        cookieUtils.setCookie(res, "refresh-token", refreshToken, refreshTokenMaxAge);
+        cookieUtils.deleteCookie(res, appProperties.getJwt().getRefreshTokenCookieName());
+        cookieUtils.setCookie(res, appProperties.getJwt().getRefreshTokenCookieName(), refreshToken, refreshTokenMaxAge);
 
 
         return SignInRes.builder()
@@ -99,7 +101,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public Map getAccessToken(HttpServletRequest req){
-        Cookie cookie=cookieUtils.getCookie(req, "refresh-token");
+        Cookie cookie=cookieUtils.getCookie(req, appProperties.getJwt().getRefreshTokenCookieName());
 
         if(cookie==null){ //refresh 토큰 존재
             throw new RuntimeException();

@@ -2,6 +2,8 @@ package com.green.greengram.security.oauth2;
 
 import com.green.greengram.common.CookieUtils;
 import com.green.greengram.common.model.AppProperties;
+import com.green.greengram.security.MyUser;
+import com.green.greengram.security.jwt.JwtTokenProviderV2;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +19,13 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     private final OAuth2AuthenticationRequestBasedOnCookieRepository repository;
     private final CookieUtils cookieUtils;
     private final AppProperties appProperties;
+    private final JwtTokenProviderV2 jwtTokenProvider;
 
     //@Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response){
         log.info("OAuth2AUthenticationFailureHandler - onAuthenticationFailure");
-        //?????????????
+
+
+
     }
 }

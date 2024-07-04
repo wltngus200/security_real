@@ -31,6 +31,6 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo{//부모는 자식객�
 
     @Override
     public String getProfilePicUrl() {
-        return (String)attribute.get("????");
+        return (String)attribute.get("picture");
     }
 }

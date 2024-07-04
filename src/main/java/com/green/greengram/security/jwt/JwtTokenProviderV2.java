@@ -34,7 +34,7 @@ public class JwtTokenProviderV2 {
     public JwtTokenProviderV2(ObjectMapper om, AppProperties appProperties){
         this.om=om;
         this.appProperties=appProperties;
-        this.secretKey=Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(appProperties.getJwt().getSecret()));
+        this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(appProperties.getJwt().getSecret()));
         //암호화, 복호화 할 때 사용하는 키를 생성하는 부분, decode 메소드에 보내는 아규먼트 값은 우리가 설정한 문자열
     }
 

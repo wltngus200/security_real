@@ -56,6 +56,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 5MB
+      max-request-size: 30MB
   jackson:
     deserialization:
       fail-on-unknown-properties: false
@@ -72,6 +73,7 @@ springdoc:
     operations-sorter: method
     default-model-expand-depth: 10
     default-models-expand-depth: 10
+    display-request-duration: true
 
   cache:
     disabled: true
@@ -90,6 +92,7 @@ app:
     header-schema-name: authorization #보통 해더에 JWT 토큰 담음, 키 이름으로는 뭘 쓸지 상관없으나 프론트와 협의
     token-type: Bearer #토큰의 종류 Bearer는 JWT, OAuth(주로 소셜로그인-회원가입을 자동화-에 사용)를 의미 프리픽스로 항상 들어감
     access-token-expiry: 1_800_000 #토큰 만료시간 1000ms=1초 (7_200_000=2시간)
+    refresh-token-cookie-name: refresh-token
     refresh-token-expiry: 1_296_000_000 #토큰 만료시간 15일
 
   oauth2:
@@ -115,6 +118,8 @@ management:
     health:
       #      /actuator/health의 디테일한 정보를 표시
       show-details: always
+  shutdown:
+    enabled: true
 
   # 모든 엔드포인트 전체 설정
   endpoints:

@@ -26,6 +26,7 @@ public class AppProperties {
         private long refreshTokenExpiry;
         //yaml에서 저장되지 않음
         private int refreshTokenCookieMaxAge; //JS로 접근 할 수 없는 토큰
+        private String refreshTokenCookieName;
 
         public void setRefreshTokenExpiry(long refreshTokenExpiry){
             this.refreshTokenExpiry=refreshTokenExpiry;

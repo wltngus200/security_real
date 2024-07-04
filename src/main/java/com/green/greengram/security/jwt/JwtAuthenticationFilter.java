@@ -16,13 +16,13 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor //생성자를 만드는 것(기본 생성자 X)
 @Component //빈등록
-public class JwtAuthenticationFilter extends OncePerRequestFilter/*추상 클래스: 여러번 요청이 와도 1번만 호출*/ {
+public class JwtAuthenticationFilter extends OncePerRequestFilter /*추상 클래스: 여러번 요청이 와도 1번만 호출*/ {
     private final JwtTokenProviderV2 jwtTokenProvider;
 
     //provider에서 @component가 없으면 에러 -> 스프링이 빈등록을 해서 DI해 줄 주소값이 X
     //추상 클래스에는 추상메소드와 일반 메소드 공존 가능. 추상메소드(선언부만 존재)는 구현하라는 강제성이 존재
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException  {
         //Header의 authorization키에 저장되어 있는 값을 리턴(있으면 문자열(jwt), 없으면 null)
         //JWT 값이 있으면 로그인 상태, null이면 비로그인 상태(로그아웃 상태)
         String token = jwtTokenProvider.resolveToken(request);
