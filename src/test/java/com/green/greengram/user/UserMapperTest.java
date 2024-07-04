@@ -1,9 +1,6 @@
 package com.green.greengram.user;
 
-import com.green.greengram.user.model.User;
-import com.green.greengram.user.model.UserInfoGetReq;
-import com.green.greengram.user.model.UserInfoGetRes;
-import com.green.greengram.user.model.UserProfilePatchReq;
+import com.green.greengram.user.model.*;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +18,18 @@ class UserMapperTest {
     private UserMapper mapper;
     @Test
     void getUserId() {
-        User user1=mapper.getUserId("aa123");
+        SignInPostReq req=new SignInPostReq();
+        User user1=mapper.getUserId(req); //시큐리티 넣고 나니 에러 터짐
         List<User> userList=mapper.selTest(user1.getUserId());
         User user1Comp=userList.get(0);
         assertEquals(user1Comp, user1, "첫번째 문제");
 
-        User user3=mapper.getUserId("dd123");
+        User user3=mapper.getUserId(req);
         List<User> userList3=mapper.selTest(user3.getUserId());
         User user3Comp=userList3.get(0);
         assertEquals(user3Comp, user3, "뭐지");
 
-        User userNo=mapper.getUserId("없지롱~~~");
+        User userNo=mapper.getUserId(req);
         assertNull(userNo, "없는 사용자 레코드 넘어옴");
     }
 

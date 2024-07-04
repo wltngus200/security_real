@@ -5,6 +5,7 @@ import com.green.greengram.feedcomment.model.FeedCommentDeleteReq;
 import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import com.green.greengram.feedcomment.model.FeedCommentPostReq;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class FeedCommentControllerImpl implements FeedCommentController {
     }
 
     @DeleteMapping
-    public ResultDto<Integer> deleteFeedComment(@PathVariable @ModelAttribute FeedCommentDeleteReq p){
+    public ResultDto<Integer> deleteFeedComment(@ParameterObject @ModelAttribute FeedCommentDeleteReq p){
         //@RequestBody(Json, 파일)=Post Put에 적절(노출 되어서는 안 되는 데이터)
         //@PathVariable(적은 데이터)=Get Delete에 적절
         int result=service.deleteFeedComment(p);
