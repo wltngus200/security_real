@@ -35,11 +35,11 @@ class UserMapperTest {
 
     @Test
     void selProfileUserInfo() { //프로필을 봤을 때 유저의 정보
-        UserInfoGetReq reqNull=new UserInfoGetReq(0, 0);
+        UserInfoGetReq reqNull=new UserInfoGetReq(0);
         UserInfoGetRes resNull=mapper.selProfileUserInfo(reqNull);
         assertNull(resNull, "없어야되는데 넘어옴");
 
-        UserInfoGetReq req1=new UserInfoGetReq(2, 1);
+        UserInfoGetReq req1=new UserInfoGetReq(2);
         UserInfoGetRes res1=mapper.selProfileUserInfo(req1);
 
         UserInfoGetRes expectedRes1=new UserInfoGetRes();

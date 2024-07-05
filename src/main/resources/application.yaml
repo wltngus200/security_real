@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: ${DEFAULT.DB_URL}
     username: ${DEFAULT.USER_NAME}
     password: ${DEFAULT.PASSWORD}

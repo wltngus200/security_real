@@ -77,7 +77,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             //http://localhost:8080/oauth/redriect?user_id=1&nm=홍길동 ... 쿼리스트링 만들어줌
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("user_id", myUserOAuth2VO.getUserId())
-                    .queryParam("nm", myUserOAuth2VO.getNm())
+                    .queryParam("nm", myUserOAuth2VO.getNm()).encode()
                     .queryParam("pic", myUserOAuth2VO.getPic())
                     .queryParam("access_token", accessToken)
                     .build().toUriString();

@@ -13,6 +13,7 @@ public class UserInfoGetReq {
     //@Schema(name="signed_user_id", defaultValue="1", description = "로그인 한 유저 프로필")
     @JsonIgnore
     private long signedUserId;//로그인 개념 들어가면 안 씀
+
     @Schema(name="profile_user_id", defaultValue="2", description = "다른 유저 프로필")
     private long profileUserId;
     //쿼리스트링으로 넘어감 대문자 안 쓰고 싶은데 2가지니까 생성자로 처리
@@ -20,9 +21,8 @@ public class UserInfoGetReq {
 
 
 
-    @ConstructorProperties({"signed_user_id", "profile_user_id"})
-    public UserInfoGetReq(long signedUserId, long profileUserId){
-        this.signedUserId=signedUserId;
+    @ConstructorProperties({"profile_user_id"})
+    public UserInfoGetReq(long profileUserId){
         this.profileUserId=profileUserId;
     }
 

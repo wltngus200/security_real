@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
         //p.setProviderType("LOCAL")와 같음
         User user=mapper.getUserId(p);
         if(user==null){throw new RuntimeException("(′д｀σ)σ 너는 누구야?");
-        }else if(!BCrypt.checkpw(p.getUpw(),user.getUpw())){
+        }else if(!passwordEncoder.matches(p.getUpw(),user.getUpw())){
             throw new RuntimeException("(o゜▽゜)o☆ 비밀번호 틀렸쪄");
         }
         //UserDetails userDetails=new MyUserDetails(user.getUserId(),"ROLE_USER");

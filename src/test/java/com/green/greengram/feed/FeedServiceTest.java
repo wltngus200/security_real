@@ -92,7 +92,7 @@ class FeedServiceTest {
 
     @Test
     void getFeed() {
-        FeedGetReq req=new FeedGetReq(1, 10,2,3L);
+        FeedGetReq req=new FeedGetReq(1, 10,3L);
         List<FeedGetRes> list=new ArrayList(); //리스트
         FeedGetRes fgr1=new FeedGetRes(); //0번
         FeedGetRes fgr2=new FeedGetRes(); //1번
