@@ -1,6 +1,5 @@
 package com.green.greengram.security.oauth2;
 
-import com.green.greengram.security.MyUser;
 import com.green.greengram.security.MyUserDetails;
 import com.green.greengram.security.MyUserOAuth2VO;
 import com.green.greengram.security.SignInProviderType;

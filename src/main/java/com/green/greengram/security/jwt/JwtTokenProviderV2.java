@@ -135,6 +135,7 @@
 //    }
 //}
 
+//////////////////////////////////////////// 강사님  COPY ////////////////////////////////////////////
 
 package com.green.greengram.security.jwt;
 
@@ -147,7 +148,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
