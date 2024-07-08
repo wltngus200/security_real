@@ -19,7 +19,7 @@ public class AuthenticationFacade {
                 .getPrincipal/*우리가 넣었던 정보를 빼와서 처리한다*/();
         return myUserDetails==null? null:myUserDetails.getMyUser();
     }
-//이뮤터블 =setter가 없다 한번 값을 넣고 바뀌지 않았으면 한다
+    //이뮤터블 =setter가 없다 한번 값을 넣고 바뀌지 않았으면 한다
     public long getLoginUserId(){
         MyUser myUser=getLoginUser();
         return myUser==null?0: myUser.getUserId();

@@ -81,6 +81,12 @@ public class MyOAuth2UserService extends DefaultOAuth2UserService {
 
             user=new User(signUpParam.getUserId(), signUpParam.getUid(), null,
                     signUpParam.getNm(), signUpParam.getPic(), null, null);
+        }//소셜 로그인 정보를 제공한 사이트 ex.네이버에서 프로필 사진을 변경해서 기존 사진이 사라진 경우 에러 야기(Notion 0708)
+        else{
+            if((user.getPic()==null ||!user.getPic().startsWith("http")) && !user.equals(oAuth2UserInfo.getProfilePicUrl())){ //프로필이 변경되었다면
+                //프로필 사진 update
+
+            }
         }
 
         MyUserOAuth2VO myUserOauth2VO

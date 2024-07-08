@@ -53,6 +53,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 throw new IllegalArgumentException("인증되지 않은 Redirect URI입니다.");
             }
 
+
+
             //FE가 원하는 redirect_url값이 저장
             String targetUrl = redirectUri == null ? getDefaultTargetUrl() : redirectUri;
             //userId, nm, pic, access_token을 FE에 return
