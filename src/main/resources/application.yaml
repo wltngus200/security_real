@@ -6,6 +6,10 @@ spring:
     url: ${DEFAULT.DB_URL}
     username: ${DEFAULT.USER_NAME}
     password: ${DEFAULT.PASSWORD}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
 
   security:
     oauth2:
@@ -57,9 +61,7 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 30MB
-  jackson:
-    deserialization:
-      fail-on-unknown-properties: false
+
 
 
 mybatis:

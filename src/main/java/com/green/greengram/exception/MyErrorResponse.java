@@ -13,6 +13,7 @@ import java.util.List;
 @SuperBuilder //부모값까지 builder 자식 객체에도 똑같이 해줘야 함
 public class MyErrorResponse extends MyResponse<String>/*(구)ResultDto 다른 타입으로 받았던 걸 String만 가지는 애를 상속*/ {
     private final List<ValidationError> valids; //여러개의 에러메세지 동시 출력
+                        //INNER CLASS
 
     @Getter
     @Builder
@@ -24,7 +25,7 @@ public class MyErrorResponse extends MyResponse<String>/*(구)ResultDto 다른 �
         private final String message; //validation 에러 메세지
 
         /*생성자 같은 메소드 validationError를 builder로 객체화 하여 그 주소값 리턴*/
-        public static ValidationError of(final FieldError fieldError){
+        public static ValidationError/*자기자신 return*/ of(final FieldError fieldError){
             return ValidationError.builder()
                     .field(fieldError.getField()/*멤버 필드명*/)
                     .message(fieldError.getDefaultMessage()/*메세지*/)

@@ -59,13 +59,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
     private List<MyErrorResponse.ValidationError> getValidationError(BindException e){
+
         List<MyErrorResponse.ValidationError> list=new ArrayList();
+            //이너클래스를 타입으로 가지는 리스트
 
         //for(FieldError err: e.getBindingResult().getFieldErrors()){
         //}위와 아래는 같음
-        List<FieldError> fieldErrorList= e.getBindingResult().getFieldErrors();
+        List<FieldError> fieldErrorList= e.getBindingResult()/*BindingResult*/.getFieldErrors();
+                                        //BindException과 BindingResult는 상속관계
         for(FieldError fieldError: fieldErrorList){
-            MyErrorResponse.ValidationError validError=MyErrorResponse.ValidationError.of(fieldError);
+            MyErrorResponse.ValidationError validError=MyErrorResponse.ValidationError.of/*자기자신 return*/(fieldError);
             list.add(validError);
             //list.add(MyErrorResponse.ValidationError.of(fieldError))
         }
