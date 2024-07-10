@@ -20,7 +20,7 @@ public class MyErrorResponse extends MyResponse<String>/*(구)ResultDto 다른 �
     @RequiredArgsConstructor
     /*inner class가 있을 때 적어 주는 것을 추천- 성능이 좋아짐*/
     public static class ValidationError {
-        //Validation 에러가 발생 시, 해당하는 에러 메세지를 표시할 때 사용하는 객체
+        //Validation(검증) 에러가 발생 시, 해당하는 에러 메세지를 표시할 때 사용하는 객체
         private final String field; //validation 에러가 발생된 멤버필드 명
         private final String message; //validation 에러 메세지
 

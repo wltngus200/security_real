@@ -16,7 +16,6 @@ public enum MemberErrorCode implements ErrorCode{ //ERROR CODE를 상속받음 �
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
     //생성자 호출
 
-
     private final HttpStatus httpStatus;
     private final String message;
 }

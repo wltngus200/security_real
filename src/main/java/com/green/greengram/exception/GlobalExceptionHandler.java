@@ -24,7 +24,7 @@ import java.util.List;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     //우리가 커스텀한 예외가 발생되었을 경우 캐치
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<Object> handleException(CustomException e)/*우리가 만든 에러코드*/{
+    public ResponseEntity<Object> handleException(CustomException e)/*우리가 만든 에러코드를 담고있음*/{
         log.error("CustomException - handlerException: {}", e);
         return handleExceptionInternal(e.getErrorCode());
     }
@@ -50,15 +50,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(makeErrorResponse(errorCode, e));
     }
 
-    private MyErrorResponse makeErrorResponse(ErrorCode errorCode, BindException e){
+    private MyErrorResponse/*DTO상속*/ makeErrorResponse(ErrorCode errorCode, BindException e){
         return MyErrorResponse.builder()
                 .statusCode(errorCode.getHttpStatus())
                 .resultMsg(errorCode.getMessage())
                 .resultData(errorCode.name())//enum의 이름
-                .valids(e==null? null: getValidationError(e))//validation 에러 메세지 정리
+                .valids(e==null? null: getValidationError(e)/*list*/)//validation 에러 메세지 정리
                 .build();
     }
-    private List<MyErrorResponse.ValidationError> getValidationError(BindException e){
+    private List<MyErrorResponse.ValidationError/*static*/> getValidationError(BindException e){
 
         List<MyErrorResponse.ValidationError> list=new ArrayList();
             //이너클래스를 타입으로 가지는 리스트
@@ -66,9 +66,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         //for(FieldError err: e.getBindingResult().getFieldErrors()){
         //}위와 아래는 같음
         List<FieldError> fieldErrorList= e.getBindingResult()/*BindingResult*/.getFieldErrors();
-                                        //BindException과 BindingResult는 상속관계
+                                            //BindException -> BindingResult
         for(FieldError fieldError: fieldErrorList){
-            MyErrorResponse.ValidationError validError=MyErrorResponse.ValidationError.of/*자기자신 return*/(fieldError);
+            //리스트에 들어가는 타입
+            MyErrorResponse.ValidationError validError
+                    = MyErrorResponse.ValidationError.of/*자기자신 return*/(fieldError)/*builder*/;
             list.add(validError);
             //list.add(MyErrorResponse.ValidationError.of(fieldError))
         }
