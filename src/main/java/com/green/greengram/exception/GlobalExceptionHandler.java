@@ -69,5 +69,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             list.add(validError);
             //list.add(MyErrorResponse.ValidationError.of(fieldError))
         }
+        return list;
     }
 }
