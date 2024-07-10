@@ -1,22 +1,15 @@
 package com.green.greengram.userfollow;
 
 import com.green.greengram.BaseIntegrationTest;
-import com.green.greengram.common.model.ResultDto;
+import com.green.greengram.common.model.MyResponse;
 import com.green.greengram.userfollow.model.UserFollowReq;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.context.annotation.ApplicationScope;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -39,7 +32,7 @@ public class UserFollowIntegrationTest extends BaseIntegrationTest {
                 .andReturn(); //얘가 없으면 ResultActions를 리턴함
 
         String resContents/*BODY에 담긴 JSON형태의 문자열*/ = mr.getResponse().getContentAsString();
-        ResultDto<Integer> result = om.readValue(resContents/*String(JSON)*/, ResultDto.class/*담으려는 객체*/); //역직렬화
+        MyResponse<Integer> result = om.readValue(resContents/*String(JSON)*/, MyResponse.class/*담으려는 객체*/); //역직렬화
         assertEquals(1, result.getResultData()); //객체에 담긴 값 불러오기
 
     }
@@ -60,7 +53,7 @@ public class UserFollowIntegrationTest extends BaseIntegrationTest {
                 .andReturn();
 
         String resContents= mr.getResponse().getContentAsString();
-        ResultDto<Integer> result= om.readValue(resContents, ResultDto.class);
+        MyResponse<Integer> result= om.readValue(resContents, MyResponse.class);
         assertEquals(1, result.getResultData());
         //얘만 실행하면 4,1 은 없다 >>왜...?
     }

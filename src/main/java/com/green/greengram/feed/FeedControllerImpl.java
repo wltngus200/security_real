@@ -1,6 +1,6 @@
 package com.green.greengram.feed;
 
-import com.green.greengram.common.model.ResultDto;
+import com.green.greengram.common.model.MyResponse;
 import com.green.greengram.feed.model.FeedGetReq;
 import com.green.greengram.feed.model.FeedGetRes;
 import com.green.greengram.feed.model.FeedPostReq;
@@ -22,9 +22,9 @@ public class FeedControllerImpl {
     private final FeedService service;
 
     @PostMapping
-    public ResultDto<FeedPostRes> postFeed(@RequestPart List<MultipartFile> pics, @RequestPart FeedPostReq p){
+    public MyResponse<FeedPostRes> postFeed(@RequestPart List<MultipartFile> pics, @RequestPart FeedPostReq p){
         FeedPostRes result=service.postFeed(pics, p);
-        return ResultDto.<FeedPostRes>builder()
+        return MyResponse.<FeedPostRes>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ 올렸엉")
                 .resultData(result)
@@ -32,9 +32,9 @@ public class FeedControllerImpl {
     }
 
     @GetMapping
-    public ResultDto<List<FeedGetRes>> getFeed(@ModelAttribute @ParameterObject FeedGetReq p){
+    public MyResponse<List<FeedGetRes>> getFeed(@ModelAttribute @ParameterObject FeedGetReq p){
         List<FeedGetRes> list=service.getFeed(p);
-        return ResultDto.<List<FeedGetRes>>builder()
+        return MyResponse.<List<FeedGetRes>>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg("(╬▔皿▔)╯ 아, 왜 안 되는데")
                 .resultData(list)
@@ -42,9 +42,9 @@ public class FeedControllerImpl {
     }
 
     @DeleteMapping
-    public ResultDto<Integer> deleteFeed(@ModelAttribute @ParameterObject long feedId){
+    public MyResponse<Integer> deleteFeed(@ModelAttribute @ParameterObject long feedId){
         int result=service.deleteFeed(feedId);
-        return ResultDto.<Integer>builder()
+        return MyResponse.<Integer>builder()
                 .statusCode(HttpStatus.OK)
                 .resultData(result)
                 .resultMsg("╰(艹皿艹 ) 으...")

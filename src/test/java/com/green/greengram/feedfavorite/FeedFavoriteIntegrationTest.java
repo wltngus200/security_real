@@ -1,19 +1,13 @@
 package com.green.greengram.feedfavorite;
 
 import com.green.greengram.BaseIntegrationTest;
-import com.green.greengram.common.model.ResultDto;
-import com.green.greengram.feedfavorite.model.FeedFavoriteToggleReq;
+import com.green.greengram.common.model.MyResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +32,7 @@ public class FeedFavoriteIntegrationTest extends BaseIntegrationTest {//지워�
                 .andReturn();
 
         String resJson=mr.getResponse().getContentAsString();
-        ResultDto<Integer> result = om.readValue(resJson, ResultDto.class);
+        MyResponse<Integer> result = om.readValue(resJson, MyResponse.class);
         assertEquals(1, result.getResultData());
     }
 
@@ -56,7 +50,7 @@ public class FeedFavoriteIntegrationTest extends BaseIntegrationTest {//지워�
                 .andReturn();
 
         String resJson=mr.getResponse().getContentAsString();
-        ResultDto<Integer> result = om.readValue(resJson, ResultDto.class);
+        MyResponse<Integer> result = om.readValue(resJson, MyResponse.class);
         assertEquals(1, result.getResultData());
 
     }

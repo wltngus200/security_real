@@ -2,12 +2,9 @@ package com.green.greengram.feedcomment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengram.CharEncodingConfiguration;
-import com.green.greengram.common.model.ResultDto;
 import com.green.greengram.feedcomment.model.FeedCommentDeleteReq;
 import com.green.greengram.feedcomment.model.FeedCommentGetRes;
 import com.green.greengram.feedcomment.model.FeedCommentPostReq;
-import com.green.greengram.feedfavorite.FeedFavoriteControllerImpl;
-import com.green.greengram.feedfavorite.FeedFavoriteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,7 +13,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -25,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

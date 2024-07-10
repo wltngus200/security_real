@@ -1,12 +1,9 @@
 package com.green.greengram.userfollow;
 
-import com.green.greengram.common.model.ResultDto;
+import com.green.greengram.common.model.MyResponse;
 import com.green.greengram.userfollow.model.UserFollowReq;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserFollowController {
-    ResultDto<Integer> postUserFollow(UserFollowReq p);
-    ResultDto<Integer> deleteUserFollow(UserFollowReq p);
+    MyResponse<Integer> postUserFollow(UserFollowReq p);
+    MyResponse<Integer> deleteUserFollow(UserFollowReq p);
 }

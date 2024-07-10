@@ -2,7 +2,7 @@ package com.green.greengram.userfollow;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengram.CharEncodingConfiguration;
-import com.green.greengram.common.model.ResultDto;
+import com.green.greengram.common.model.MyResponse;
 import com.green.greengram.userfollow.model.UserFollowReq;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import org.springframework.util.MultiValueMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -50,7 +49,7 @@ class UserFollowControllerTest {
         String json=om.writeValueAsString(p); //예외 처리 throw하고 있다 //입력을 JSon화
 
         //리턴을 기대하는 값
-         ResultDto<Integer> expectedResult=ResultDto.<Integer>builder()
+         MyResponse<Integer> expectedResult= MyResponse.<Integer>builder()
                                             .statusCode(HttpStatus.OK)
                                             .resultMsg(HttpStatus.OK.toString())
                                             .resultData(resultData) //1
@@ -85,7 +84,7 @@ class UserFollowControllerTest {
         String json=om.writeValueAsString(p); //예외 처리 throw하고 있다
 
         //리턴을 기대하는 값
-        ResultDto<Integer> expectedResult=ResultDto.<Integer>builder()
+        MyResponse<Integer> expectedResult= MyResponse.<Integer>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg(HttpStatus.OK.toString())
                 .resultData(resultData) //1
@@ -124,7 +123,7 @@ class UserFollowControllerTest {
         params.add("from_user_id", String.valueOf(p.getFromUserId()));
         params.add("to_user_id", String.valueOf(p.getToUserId()));
 
-        ResultDto<Integer> expectedResult=ResultDto.<Integer>builder()
+        MyResponse<Integer> expectedResult= MyResponse.<Integer>builder()
                 .statusCode(HttpStatus.OK)
                 .resultMsg(HttpStatus.OK.toString())
                 .resultData(resultData) //1
