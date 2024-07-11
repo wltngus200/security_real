@@ -3,6 +3,7 @@ package com.green.greengram.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
 @Getter
 @RequiredArgsConstructor //final이 붙은 생성자 생성
 public enum MemberErrorCode implements ErrorCode{ //ERROR CODE를 상속받음 부모 타입인 error code에 들어갈 수 있음
