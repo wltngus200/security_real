@@ -15,10 +15,12 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.stereotype.Component;
 
 /*
-인증/인가 코드는 요청을 보낼 때 마다 값이 달라진다
-
+인가/인증 코드가 1회용인 것 처럼  OAuth2AuthorizationRequest 객체도 1회용으로 사용.
+    (인가/인증 코드는 요청 보낼때마다 값이 달라진다)
+*/
+/*
 스프링 시큐리티 OAuth처리 때 사용하는 필터가 2개
-Oauth2AuthorizationRequestRedirectFilter(가 필터), Oauth2LoginAuthenticationFilter(나 필터)
+Oauth2AuthorizationRequestRedirectFilter(AS 가 필터), Oauth2LoginAuthenticationFilter(AS 나 필터)
 
 OAuth2AuthorizationRequest(as A)는 소셜로그인 요청할 때마다 생성되는 객체
 1단계 인가코드(인시코드, 인증코드)를 요청할 때 A를 사용

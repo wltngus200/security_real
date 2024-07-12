@@ -2,7 +2,7 @@ spring:
   config:
     import: optional:file:.env
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    driver-class-name: ${DEFAULT.DB_DRIVE_CLASS_NAME}
     url: ${DEFAULT.DB_URL}
     username: ${DEFAULT.USER_NAME}
     password: ${DEFAULT.PASSWORD}
@@ -102,7 +102,7 @@ app:
     authorization-request-cookie-name: oauth_auth_request
     redirect-uri-param-cookie-name: redirect_uri
     cookie-expiry-seconds: 180
-    authorized-redirect-uris:
+    authorized-redirect-uris: #OAuth2 처리시 허용한 FE redirect 값
         #리스트
       - http://localhost:3000/oauth/redirect
       - http://localhost:8080/oauth/redirect

@@ -38,7 +38,7 @@ public class OAuth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFi
                 String errRedirectUrl= UriComponentsBuilder.fromUriString("/err_message")
                         .queryParam("message", "유효한 Redirect URL이 아닙니다.").encode()
                         .toUriString();
-                //"/err_massage?message=유효한 Redirect URL이 아닙니다"
+                            //"/err_massage?message=유효한 Redirect URL이 아닙니다"
                 response.sendRedirect(errRedirectUrl);
                 return;
             }
