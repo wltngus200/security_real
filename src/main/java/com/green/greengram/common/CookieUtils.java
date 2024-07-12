@@ -7,9 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.util.SerializationUtils;
 
+import java.io.Serializable;
 import java.util.Base64;
 
 import static org.springframework.web.util.WebUtils.getCookie;
@@ -60,7 +61,7 @@ public class CookieUtils {//백에서 쿠키는 작업할 수 있지만 헤더�
         res.addCookie(cookie);
     }
 
-    public void setCookie(HttpServletResponse res, String name, Object obj, int maxAge){
+    public void setCookie(HttpServletResponse res, String name, Serializable obj, int maxAge){
        this.setCookie(res, name, serialize/*문자열을 만들기 위함*/(obj), maxAge);
        //cookie에 " 저장의 문제
     }
@@ -72,7 +73,7 @@ public class CookieUtils {//백에서 쿠키는 작업할 수 있지만 헤더�
     //제네릭 컴파일 시점에서 데이터의 타입이 정해짐
 
     //객체가 가진 데이터를 문자열로 변환(암호화)
-    public String serialize(Object obj){//직렬화
+    public String serialize(Serializable obj){//직렬화
         return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(obj));
                                                     //  Object -> byte[] -> String
     }

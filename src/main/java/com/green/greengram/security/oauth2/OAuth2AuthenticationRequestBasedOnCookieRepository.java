@@ -14,6 +14,23 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 
+/*
+인증/인가 코드는 요청을 보낼 때 마다 값이 달라진다
+
+스프링 시큐리티 OAuth처리 때 사용하는 필터가 2개
+Oauth2AuthorizationRequestRedirectFilter(가 필터), Oauth2LoginAuthenticationFilter(나 필터)
+
+OAuth2AuthorizationRequest(as A)는 소셜로그인 요청할 때마다 생성되는 객체
+1단계 인가코드(인시코드, 인증코드)를 요청할 때 A를 사용
+2단계 AccessToken을 요청한 이후에는 A를 사용할 일이 발생하지 않기 때문에 Cookie에서 삭제
+
+세션을 이용해 처리하는 방식은 확장이 불리함>> Cookie로 해결
+이전에 세션에서 삭제 처리를 removeAuthorizationRequest 메소드에서 했었던 거 같음
+
+가 필터에서 removeAuthorizationRequest 메소드를 호출해서 리턴 받은 값 활용
+authorizationRequestRepository 시큐리티 설정(Configuration)에 보면 repository를 보내고 있고, 그건 우리가 만든 것
+
+* */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -51,7 +68,7 @@ public class OAuth2AuthenticationRequestBasedOnCookieRepository
     }
 
     @Override
-    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
+    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) { // 삭제 하면서 넘겨줌 not void
         log.info("CookieRepository - removeAuthorizationRequest");
         return this.loadAuthorizationRequest(request);
     }

@@ -1,12 +1,10 @@
 package com.green.greengram.security;
 
+import com.green.greengram.common.model.AppProperties;
 import com.green.greengram.security.jwt.JwtAuthenticationAccessDeniedHandler;
 import com.green.greengram.security.jwt.JwtAuthenticationFilter;
 import com.green.greengram.security.jwt.JwtAuthenticationEntryPoint;
-import com.green.greengram.security.oauth2.MyOAuth2UserService;
-import com.green.greengram.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.green.greengram.security.oauth2.OAuth2AuthenticationRequestBasedOnCookieRepository;
-import com.green.greengram.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.green.greengram.security.oauth2.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,6 +25,8 @@ public class SecurityConfiguration {
     private final OAuth2AuthenticationRequestBasedOnCookieRepository repository;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final MyOAuth2UserService myOAuth2UserService;
+    private final AppProperties appProperties;
+    private final OAuth2AuthenticationCheckRedirectUriFilter oAuth2AuthenticationCheckRedirectUriFilter;
     /*Security와 관련된 빈등록을 여러개 -> 메소드 레벨 빈등록=나중에 취합하기 좋음
         메소드 빈등록으로 하지 않으면 각각 클래스로 만들어야 한다.*/
     @Bean //메소드 타입의 빈등록(파라미터, 리턴타입 중요) 파라미터는 빈등록할 때 필요한 객체
@@ -72,7 +73,7 @@ public class SecurityConfiguration {
                         .accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler())
                 )
                 .oauth2Login( oauth2 -> oauth2.authorizationEndpoint(
-                                        auth -> auth.baseUri("/oauth2/authorization")
+                                        auth -> auth.baseUri(appProperties.getOauth2().getBaseUri())
                                                 .authorizationRequestRepository(repository)
 
                                 )
@@ -80,7 +81,8 @@ public class SecurityConfiguration {
                                 .userInfoEndpoint(userInfo -> userInfo.userService(myOAuth2UserService))
                                 .successHandler(oAuth2AuthenticationSuccessHandler)
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
-                ).build();
+                ).addFilterBefore(oAuth2AuthenticationCheckRedirectUriFilter, OAuth2AuthorizationRequestRedirectFilter/*얘 앞에*/.class)
+                .build();
 
 
     }

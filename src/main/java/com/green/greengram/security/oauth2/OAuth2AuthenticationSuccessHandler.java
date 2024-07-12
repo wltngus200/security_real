@@ -49,9 +49,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             String redirectUri = cookieUtils.getCookie(request, appProperties.getOauth2().getRedirectUriParamCookieName(), String.class/*타입 지정*/);
 
             //yaml.app.oauth2.uthorized-redirect-uris 리스트에 없는 Uri인 경우
-            if (redirectUri != null && !hasAuthorizedRedirectUri/*yaml 파일에서 조회*/(redirectUri)) {
-                throw new IllegalArgumentException("인증되지 않은 Redirect URI입니다.");
-            }
 
 
 
@@ -92,22 +89,5 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         //우리가 설정한 redirect-uri인지 체크 yaml에서 설정한 list값과 매칭 확인
-        private boolean hasAuthorizedRedirectUri (String uri){
-            //주소값과 관련된 메소드 지원 ex.쿼리스트링 값 빼오기
-            URI savedCoolieRedirectUri/*쿠키에 저장됨*/ = URI.create(uri);
-            log.info("savedCoolieRedirectUri.getHost():{}", savedCoolieRedirectUri.getHost());
-            //http://localhost:8080/ 까지만 나온다
-            log.info("savedCoolieRedirectUri.getPort():{}", savedCoolieRedirectUri.getPort());
-            log.info("savedCoolieRedirectUri.getPath():{}", savedCoolieRedirectUri.getPath());
 
-
-            for (String redirectUri/*yaml에 저장*/: appProperties.getOauth2().getAuthorizedRedirectUris()) {
-                URI authorizedUri = URI.create(redirectUri);
-                if (savedCoolieRedirectUri.getHost().equalsIgnoreCase(authorizedUri.getHost())
-                        && /*port num = int*/savedCoolieRedirectUri.getPort() == authorizedUri.getPort()) {
-                    return true; //이후에 더 있더라도 같으면 종료
-                }
-            }
-        return false;
-    }
 }
