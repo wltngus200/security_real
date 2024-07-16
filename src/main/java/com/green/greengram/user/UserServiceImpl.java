@@ -2,6 +2,7 @@ package com.green.greengram.user;
 
 import com.green.greengram.common.CookieUtils;
 import com.green.greengram.common.CustomFileUtils;
+import com.green.greengram.common.MyCommonUtils;
 import com.green.greengram.common.model.AppProperties;
 import com.green.greengram.exception.CustomException;
 import com.green.greengram.exception.MemberErrorCode;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -68,12 +70,19 @@ public class UserServiceImpl implements UserService{
     public SignInRes postSignIn(HttpServletResponse res, SignInPostReq p){
         p.setProviderType(SignInProviderType.LOCAL.name().toUpperCase());
         //p.setProviderType("LOCAL")와 같음
-        User user=mapper.getUserId(p);
-        if(user==null||!passwordEncoder.matches(p.getUpw(),user.getUpw())){
+        List<UserInfo> userInfoList=mapper.getUserId(p);
+
+        UserInfoRoles userInfoRoles= MyCommonUtils.convertToUserInfoRoles(userInfoList);
+
+        if(userInfoRoles==null||!passwordEncoder.matches(p.getUpw(),userInfoRoles.getUpw())){
             throw new CustomException(MemberErrorCode.INCORRECT_ID_PW/*날리고 싶은 에러*/);
         }
+
         //UserDetails userDetails=new MyUserDetails(user.getUserId(),"ROLE_USER");
-        MyUser myUser=MyUser.builder().userId(user.getUserId()).role("ROLE_USER"/*하드 코딩*/).build();
+        MyUser myUser=MyUser
+                .builder().userId(userInfoRoles.getUserId())
+                .roles(userInfoRoles.getRoles())
+                .build();
 
         //두가지 token에 myUser(유저 PK, 권한 정보를 담는다) -> why? : accessToken이 계속 백엔드로 요청을 보낼 때 Header에 넣어서 보내준다
         //refreshToken에 myUser담은 이유 : access토큰 만료 시 refresh 토큰 속 정보로 재발급(refresh 토큰 속 정보를 access 토큰에 넣음)
@@ -94,9 +103,9 @@ public class UserServiceImpl implements UserService{
 
 
         return SignInRes.builder()
-                .userId(user.getUserId())
-                .nm(user.getNm())
-                .pic(user.getPic())
+                .userId(userInfoRoles.getUserId())
+                .nm(userInfoRoles.getNm())
+                .pic(userInfoRoles.getPic())
                 .accessToken(accessToken)
                 .build();
     }

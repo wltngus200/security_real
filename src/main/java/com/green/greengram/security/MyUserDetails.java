@@ -22,10 +22,19 @@ public class MyUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //List<GrantedAuthority> list = new ArrayList();
-        //list.add(new SimpleGrantedAuthority(role));
-        //return list;
-        return Collections.singletonList(new SimpleGrantedAuthority(myUser.getRole()));
+        //단수 > 복수로 변경
+        //1)return Collections.singletonList/*1개 가진 리스트 반환*/(new SimpleGrantedAuthority(myUser.getRole()));
+        //2)List<GrantedAuthority> list2=new ArrayList();
+        //  list2.add(new SimpleGrantedAuthority("ROLE_USER"));
+        //위와 아래는 동일
+
+        //List<String> >> List<GrantedAuthority> 변경하는 작업(상속관계이기에 들어갈 수 있다)
+        //부모 타입은 자식객체 주소값 담을 수 있다
+        List<GrantedAuthority> list=new ArrayList();
+        for(String role : myUser.getRoles()){
+            list.add(new SimpleGrantedAuthority(role));
+        }
+        return list;
     }
 
     @Override

@@ -66,6 +66,8 @@ public class SecurityConfiguration {
                                         , "/api/user/follow"
                                 )
                                 .authenticated()
+                                .requestMatchers("/api/admin", "/api/admin/**")
+                                .hasAnyRole/*여러개 적용*/("ADMIN", "ADMINISTRATOR")
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,12 +1,11 @@
 package com.green.greengram.security.oauth2;
 
+import com.green.greengram.common.MyCommonUtils;
 import com.green.greengram.security.MyUserDetails;
 import com.green.greengram.security.MyUserOAuth2VO;
 import com.green.greengram.security.SignInProviderType;
 import com.green.greengram.user.UserMapper;
-import com.green.greengram.user.model.SignInPostReq;
-import com.green.greengram.user.model.SignUpPostReq;
-import com.green.greengram.user.model.User;
+import com.green.greengram.user.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -17,6 +16,9 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -69,9 +71,11 @@ public class MyOAuth2UserService extends DefaultOAuth2UserService {
         signInParam.setUid(oAuth2UserInfo.getId()); //플랫폼에서 넘어오는 유니크값(항상 같은 값이며 다른 사용자와 구별되는 유니크 값)
         signInParam.setProviderType(signInProviderType.name());
         //null check
-        User user = mapper.getUserId(signInParam);
+        List<UserInfo> userInfoList= mapper.getUserId(signInParam);
 
-        if(user==null){ //회원가입 처리
+        UserInfoRoles userInfoRoles= MyCommonUtils.convertToUserInfoRoles(userInfoList);
+
+        if(userInfoRoles==null){ //회원가입 처리
             SignUpPostReq signUpParam=new SignUpPostReq();
             signUpParam.setProviderType(signInProviderType/*google로 하면 GOOGLE*/);
             signUpParam.setUid(oAuth2UserInfo.getId());
@@ -79,18 +83,24 @@ public class MyOAuth2UserService extends DefaultOAuth2UserService {
             signUpParam.setPic(oAuth2UserInfo.getProfilePicUrl());
             int result =mapper.postUser(signUpParam);
 
-            user=new User(signUpParam.getUserId(), signUpParam.getUid(), null,
-                    signUpParam.getNm(), signUpParam.getPic(), null, null);
+            userInfoRoles=new UserInfoRoles();
+            userInfoRoles.setUserId(signUpParam.getUserId());
+            userInfoRoles.setNm(signUpParam.getNm());
+            userInfoRoles.setPic(signUpParam.getPic());
         }//소셜 로그인 정보를 제공한 사이트 ex.네이버에서 프로필 사진을 변경해서 기존 사진이 사라진 경우 에러 야기(Notion 0708)
         else{
-            if((user.getPic()==null ||!user.getPic().startsWith("http")) && !user.equals(oAuth2UserInfo.getProfilePicUrl())){ //프로필이 변경되었다면
+            if((userInfoRoles.getPic()==null ||!userInfoRoles.getPic().startsWith("http"))
+                    && !userInfoRoles.equals(oAuth2UserInfo.getProfilePicUrl())){ //프로필이 변경되었다면
                 //프로필 사진 update
 
             }
         }
 
+        List<String> roles=new ArrayList();
+        roles.add("ROLE_USER");
+
         MyUserOAuth2VO myUserOauth2VO
-                =new MyUserOAuth2VO(user.getUserId(), "ROLE_USER", user.getNm(), user.getPic());
+                =new MyUserOAuth2VO(userInfoRoles.getUserId(), roles, userInfoRoles.getNm(), userInfoRoles.getPic());
 
         MyUserDetails signInUser=new MyUserDetails();
         signInUser.setMyUser(myUserOauth2VO); //상속관계이기때문에 저장 가능

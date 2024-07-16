@@ -10,9 +10,11 @@
         (#{uid}, #{upw}, #{nm}, #{pic}, #{providerType})
     </insert>
 
-    <select id="getUserId">
-        SELECT user_id AS userId, uid, upw, nm, pic, provider_type AS providerType, created_at AS createdAt, updated_at AS updatedAt
-        FROM user
+    <select id="getUserId"> <!--signInPost-->
+        SELECT A.user_id AS userId, A.uid, A.upw, A.nm, A.pic,
+                A.created_at AS createdAt, A.updated_at AS updatedAt, B.role
+        FROM user A
+        LEFT JOIN user_roles B
         WHERE uid=#{uid}
             AND provider_type=#{providerType}
         <!--uid와 providerType로 unique(복합 유니크)-->

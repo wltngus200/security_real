@@ -74,7 +74,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             //myUser Access, Refresh token 만들 때 활용
             MyUser myUser = MyUser.builder()
                     .userId(myUserOAuth2VO.getUserId())
-                    .role(myUserOAuth2VO.getRole()).build();
+                    .roles(myUserOAuth2VO.getRoles())
+                    .build();
 
             String accessToken = jwtTokenProvider.generateAccessToken(myUser);
             String refreshToken = jwtTokenProvider.generateRefreshToken(myUser);
